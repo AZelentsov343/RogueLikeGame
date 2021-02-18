@@ -20,7 +20,7 @@ enum class MovementDir
 struct Player
 {
   explicit Player(Point pos = {.x = 10, .y = 10}) :
-                 coords(pos), old_coords(coords) {};
+                 coords(pos),  old_coords(coords) {};
 
   bool Moved() const;
   void ProcessInput(MovementDir dir);
@@ -30,6 +30,7 @@ private:
   Point coords {.x = 10, .y = 10};
   Point old_coords {.x = 10, .y = 10};
   Pixel color {.r = 255, .g = 255, .b = 0, .a = 255};
+  Image avatar {"../resources/tex.png"};
   int move_speed = 4;
 
 };

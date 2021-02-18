@@ -53,7 +53,8 @@ void Player::Draw(Image &screen)
   {
     for(int x = coords.x; x <= coords.x + tileSize; ++x)
     {
-      screen.PutPixel(x, y, color);
+        Pixel curPixel = avatar.GetPixel(x - coords.x, y - coords.y);
+        screen.PutPixel(x, y, curPixel);
     }
   }
 }

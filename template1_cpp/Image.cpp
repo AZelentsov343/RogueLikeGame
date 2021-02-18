@@ -20,6 +20,12 @@ Image::Image(int a_width, int a_height, int a_channels)
 {
   data = new Pixel[a_width * a_height ]{};
 
+  for (int i = 0; i < a_height; i++) {
+      for (int j = 0; j < a_width; j++) {
+          data[i * a_height + j] = Pixel{static_cast<uint8_t>(i + j), static_cast<uint8_t>(i - j), static_cast<uint8_t>(i * j), 255};
+      }
+  }
+
   if(data != nullptr)
   {
     width = a_width;
