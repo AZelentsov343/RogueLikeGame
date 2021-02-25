@@ -14,7 +14,7 @@ class SpriteController {
 public:
     SpriteController() : screen(WINDOW_WIDTH, WINDOW_HEIGHT, 4) {}
 
-    void addSprite(Sprite *sprite);
+    void addSprite(const Sprite& sprite);
 
     Pixel* Data() const { return screen.Data(); }
 
@@ -22,9 +22,9 @@ public:
 
     Image screen;
 private:
-    std::vector<Sprite*> background_queue;
+    std::vector<Sprite> background_queue;
 
-    std::vector<Sprite*> foreground_queue;
+    std::vector<Sprite> foreground_queue;
 
 
 

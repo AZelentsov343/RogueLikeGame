@@ -4,8 +4,8 @@
 
 #include "SpriteController.h"
 
-void SpriteController::addSprite(Sprite *sprite) {
-    if (sprite->prior() == RenderPriority::BACKGROUND) {
+void SpriteController::addSprite(const Sprite& sprite) {
+    if (sprite.prior() == RenderPriority::BACKGROUND) {
         background_queue.push_back(sprite);
     } else {
         foreground_queue.push_back(sprite);
@@ -17,10 +17,10 @@ void SpriteController::update() {
     screen.makeDefault();
 
     for (auto sprite : background_queue) {
-        sprite->DrawThis(screen);
+        sprite.DrawThis(screen);
     }
     for (auto sprite : foreground_queue) {
-        sprite->DrawThis(screen);
+        sprite.DrawThis(screen);
     }
 }
 

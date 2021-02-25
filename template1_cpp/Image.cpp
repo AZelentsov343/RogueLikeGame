@@ -13,7 +13,8 @@
 
 Image::Image(const std::string &a_path) {
     if ((data = (Pixel *) stbi_load(a_path.c_str(), &width, &height, &channels, sizeof(Pixel))) != nullptr) {
-        size = width * height * channels;
+        size = width * height;
+        shown_size = size;
         shown_data = data;
     }
 }
@@ -22,12 +23,36 @@ Image::Image(int a_width, int a_height, int a_channels) {
     data = new Pixel[a_width * a_height]{};
     width = a_width;
     height = a_height;
-    size = a_width * a_height * a_channels;
+    size = a_width * a_height;
     channels = a_channels;
     self_allocated = true;
+    shown_size = size;
     shown_data = data;
 
     makeDefault();
+}
+
+Image::Image(const Image &other) {
+    data = new Pixel[other.size]{};
+    for (int i = 0; i < other.size; i++) {
+        data[i] = other.data[i];
+    }
+    if (other.shown_data != other.data) {
+        shown_data = new Pixel[other.shown_size]{};
+        for (int i = 0; i < other.shown_size; i++) {
+            shown_data[i] = other.shown_data[i];
+        }
+        shown_size = other.shown_size;
+    } else {
+        shown_data = data;
+        shown_size = other.shown_size;
+
+    }
+    width = other.width;
+    height = other.height;
+    size = other.size;
+    channels = other.channels;
+    self_allocated = true;
 }
 
 void Image::makeDefault() {
@@ -44,7 +69,8 @@ void Image::cutOut(int x_start, int y_start, int x_fin, int y_fin) {
     if (sizeOfCut < 0) {
         throw std::runtime_error("sizeOfCut < 0");
     }
-    auto* new_data = new Pixel[size]{};
+    auto* new_data = new Pixel[sizeOfCut]{};
+    shown_size = sizeOfCut;
     for (int x = x_start; x < x_fin; x++) {
         for (int y = y_start; y < y_fin; y++) {
             new_data[index(x - x_start, y - y_start)] = data[index(x, y)];

@@ -12,6 +12,8 @@ struct Image {
 
     Image(int a_width, int a_height, int a_channels);
 
+    Image(const Image& other);
+
     int Save(const std::string &a_path);
 
     int Width() const { return width; }
@@ -41,6 +43,7 @@ private:
     int height = -1;
     int channels = 3;
     size_t size = 0;
+    size_t shown_size = 0;
     Pixel *data = nullptr;
     Pixel *shown_data = nullptr;
     bool self_allocated = false;

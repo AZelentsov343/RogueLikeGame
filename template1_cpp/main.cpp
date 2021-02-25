@@ -138,14 +138,19 @@ int main(int argc, char **argv) {
     Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
     Player player{starting_pos};
 
-    Sprite background1("../resources/tex.png", "background", 0, 512);
-    background1.cutSprite(0, 0, 256, 256);
-    Sprite background2("../resources/tex.png", "background", 0, 0);
+    //Sprite background("../resources/floor32x32.png", {0, 512});
+    //background.cutSprite(0, 0, 32, 32);
     SpriteController sc;
-    sc.addSprite(&background1);
-    sc.addSprite(&background2);
-    //background1.DrawThis(deepBackground);
-    //background2.DrawThis(deepBackground);
+
+    for (int i = 0; i < WINDOW_WIDTH; i += 32) {
+        for (int j = 0; j < WINDOW_HEIGHT; j += 32) {
+            sc.addSprite(Sprite("../resources/floor32x32.png", {i, j}));
+        }
+    }
+
+
+
+
 
     //Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 

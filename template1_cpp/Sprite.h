@@ -15,7 +15,11 @@
 
 class Sprite {
 public:
-    Sprite(const std::string& file, std::string id, Point coords, RenderPriority p = RenderPriority::BACKGROUND);
+    Sprite(const std::string& file, Point coords, RenderPriority p = RenderPriority::BACKGROUND);
+
+    Sprite(const Sprite &other) noexcept;
+
+    Sprite(Sprite&& other) noexcept;
 
     void cutSprite(int x_st, int y_st, int x_fin, int y_fin);
 
@@ -32,12 +36,11 @@ private:
     unsigned char updates = 0;
     unsigned char update_freq = 100u;
 
-    void validate_this();
+    void validate_this() const;
 
     void updating();
 
     Image image;
-    std::string id;
     int width;
     int height;
     Point coords;
