@@ -58,8 +58,9 @@ Image::Image(const Image &other) {
 void Image::makeDefault() {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-            data[i * height + j] = Pixel{static_cast<uint8_t>(i + j), static_cast<uint8_t>(i - j),
-                                           static_cast<uint8_t>(i * j), 255};
+            //data[i * height + j] = Pixel{static_cast<uint8_t>(i + j), static_cast<uint8_t>(i - j),
+            //                               static_cast<uint8_t>(i * j), 255};
+            data[i * height + j] = Pixel{0, 0, 0, 0};
         }
     }
 }

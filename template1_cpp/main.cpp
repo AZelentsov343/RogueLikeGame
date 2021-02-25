@@ -5,7 +5,7 @@
 #include "SpriteController.h"
 
 #define GLFW_DLL
-
+#include <fstream>
 #include <GLFW/glfw3.h>
 #include "shared.h"
 
@@ -104,6 +104,13 @@ int initGL() {
     return 0;
 }
 
+std::string read_level(const std::string& filename) {
+    std::ifstream infile(filename);
+    std::string s;
+    std::getline(infile, s);
+    return s;
+}
+
 int main(int argc, char **argv) {
     if (!glfwInit())
         return -1;
@@ -140,17 +147,26 @@ int main(int argc, char **argv) {
 
     //Sprite background("../resources/floor32x32.png", {0, 512});
     //background.cutSprite(0, 0, 32, 32);
+    std::string level = read_level("../level.txt");
     SpriteController sc;
 
-    for (int i = 0; i < WINDOW_WIDTH; i += 32) {
-        for (int j = 0; j < WINDOW_HEIGHT; j += 32) {
-            sc.addSprite(Sprite("../resources/floor32x32.png", {i, j}));
+
+
+    for (int i = 0; i < WINDOW_WIDTH; i += tileSize) {
+        for (int j = 0; j < WINDOW_HEIGHT; j += tileSize) {
+            //std::cout << (i / tileSize) * (WINDOW_WIDTH / tileSize) + (j / tileSize) << std::endl;
+            if (level[(i / tileSize) * (WINDOW_WIDTH / tileSize) + (j / tileSize)] == '.') {\
+                //std::cout << "floor" << std::endl;
+                sc.addSprite(Sprite("../resources/floor32x32.png", {i, j}));
+            } else if (level[(i / tileSize) * (WINDOW_WIDTH / tileSize) + (j / tileSize)] == ' ') {
+                //std::cout << "empty" << std::endl;
+                sc.addSprite(Sprite(tileSize, tileSize, {i, j}));
+            } else if (level[(i / tileSize) * (WINDOW_WIDTH / tileSize) + (j / tileSize)] == '#') {
+                //std::cout << "ground" << std::endl;
+                sc.addSprite(Sprite("../resources/ground32x32.png", {i, j}));
+            }
         }
     }
-
-
-
-
 
     //Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 

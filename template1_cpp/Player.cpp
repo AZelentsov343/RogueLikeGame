@@ -48,7 +48,7 @@ void Player::ProcessInput(MovementDir dir) {
 }
 
 void Player::Draw(Image &screen) {
-    std::cout << "Position " << coords.x << " " << coords.y <<  std::endl;
+    //std::cout << "Position " << coords.x << " " << coords.y <<  std::endl;
     /*if (Moved()) {
         for (int y = old_coords.y; y <= old_coords.y + tileSize; ++y) {
             for (int x = old_coords.x; x <= old_coords.x + tileSize; ++x) {

@@ -17,6 +17,8 @@ class Sprite {
 public:
     Sprite(const std::string& file, Point coords, RenderPriority p = RenderPriority::BACKGROUND);
 
+    Sprite(int width, int height, Point coords, RenderPriority p = RenderPriority::BACKGROUND);
+
     Sprite(const Sprite &other) noexcept;
 
     Sprite(Sprite&& other) noexcept;

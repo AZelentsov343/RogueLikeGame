@@ -15,9 +15,13 @@ Sprite::Sprite(const std::string &file, Point coords, RenderPriority p)
     finish = Point{width, height};
 }
 
+Sprite::Sprite(int width, int height, Point coords, RenderPriority p) : image(width, height, 4), width(width),
+                                                                        height(height), coords(coords), priority(p),
+                                                                        start({0, 0}), finish({width, height}) {}
+
 Sprite::Sprite(const Sprite &other) noexcept: image(other.image), coords(other.coords), priority(other.priority),
-                                         width(other.width), height(other.height), start(other.start),
-                                         finish(other.finish) {}
+                                              width(other.width), height(other.height), start(other.start),
+                                              finish(other.finish) {}
 
 Sprite::Sprite(Sprite &&other) noexcept: image(other.image), coords(other.coords), priority(other.priority),
                                          width(other.width), height(other.height), start(other.start),
