@@ -3,6 +3,7 @@
 //
 
 #include "SpriteController.h"
+#include "Door.h"
 #include <iostream>
 
 void SpriteController::addSprite(Sprite* sprite) {
@@ -14,6 +15,10 @@ void SpriteController::addSprite(Sprite* sprite) {
 
     if (sprite->collidable()) {
         collidable.push_back(sprite);
+    }
+
+    if (sprite->isInteractive()) {
+        interactive.push_back(sprite);
     }
 }
 
@@ -46,6 +51,10 @@ bool SpriteController::registerCollision(Sprite *first, Sprite *second) {
     } else if (first->getID() == "player" && second->getID() == "hole") {
         std::cout << "You lost!" << std::endl;
         return true;
+    } else if (first->getID() == "player" && second->getID() == "door") {
+        std::cout << "Door collision" << std::endl;
+        Door* door = dynamic_cast<Door*>(second);
+        return door->isOpened();
     }
     return true;
 }

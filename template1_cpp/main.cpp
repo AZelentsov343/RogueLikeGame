@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Sprite.h"
 #include "SpriteController.h"
+#include "Door.h"
 
 #define GLFW_DLL
 
@@ -56,6 +57,11 @@ void processPlayerMovement(Player *player) {
         player->move(MovementDir::RIGHT);
     else
         player->stopX();
+
+    if (Input.keys[GLFW_KEY_SPACE]) {
+        Input.keys[GLFW_KEY_SPACE] = false;
+        player->Interact();
+    }
 }
 
 void OnMouseButtonClicked(GLFWwindow *window, int button, int action, int mods) {
@@ -104,6 +110,7 @@ int initGL() {
     std::cout << "Controls: " << std::endl;
     std::cout << "press right mouse button to capture/release mouse cursor  " << std::endl;
     std::cout << "W, A, S, D - movement  " << std::endl;
+    std::cout << "press SPACE to open doors" << std::endl;
     std::cout << "press ESC to exit" << std::endl;
 
     return 0;
@@ -166,11 +173,11 @@ int main(int argc, char **argv) {
                 auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
                 sc.addSprite(sp);
             } else if (level[index] == ' ') {
-                auto sp = new Sprite("hole", tileSize, tileSize, {i, WINDOW_HEIGHT - tileSize - j},
+                auto sp = new Sprite("hole", "../resources/pit32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
                                      RenderPriority::BACKGROUND, true);
                 sc.addSprite(sp);
             } else if (level[index] == '#') {
-                auto sp = new Sprite("wall", "../resources/ground32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
+                auto sp = new Sprite("wall", "../resources/wall32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
                                      RenderPriority::BACKGROUND, true);
                 sc.addSprite(sp);
             } else if (level[index] == '@') {
@@ -183,6 +190,9 @@ int main(int argc, char **argv) {
                 auto sp = new Sprite("exit", "../resources/exit32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
                                      RenderPriority::BACKGROUND, true);
                 sc.addSprite(sp);
+            } else if (level[index] == 'D') {
+                auto door = new Door("../resources/door.png", {i, WINDOW_HEIGHT - tileSize - j});
+                sc.addSprite(door);
             }
         }
     }

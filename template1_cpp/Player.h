@@ -13,6 +13,8 @@ public:
 
     void onUpdate() override;
 
+    void Interact();
+
 private:
     int update_freq = 20u;
 

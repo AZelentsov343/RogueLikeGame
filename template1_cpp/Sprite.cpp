@@ -76,6 +76,13 @@ void Sprite::onUpdate() {
     }
 }
 
+double Sprite::distanceTo(Sprite *other) const {
+    Point center{coords.x + width / 2, coords.y + height / 2};
+    Point otherCenter{other->coords.x + other->width / 2, other->coords.y + other->height / 2};
+
+    return center.distanceTo(otherCenter);
+}
+
 void Sprite::validate_this() const {
     std::ostringstream s;
     if (coords.x + width > WINDOW_WIDTH) {

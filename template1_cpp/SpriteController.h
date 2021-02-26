@@ -26,6 +26,8 @@ public:
 
     std::vector<Sprite*> collidable;
 
+    std::vector<Sprite*> interactive;
+
     Sprite* getPlayer() const { return player; }
 
 private:

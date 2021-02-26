@@ -1,6 +1,7 @@
 #include <iostream>
 #include <utility>
 #include "Player.h"
+#include "Door.h"
 
 
 Player::Player(const std::string &file, Point coords, int move_speed)
@@ -16,6 +17,17 @@ void Player::DrawThis(Image &screen) {
             Pixel pix = image.GetPixel(i - coords.x, j - coords.y);
             if (pix != Pixel{0, 0, 0, 0}) {
                 screen.PutPixel(i, j, pix);
+            }
+        }
+    }
+}
+
+void Player::Interact() {
+    for (Sprite* item : controller->interactive) {
+        double dist = distanceTo(item);
+        if (dist < width + height) {
+            if (item->getID() == "door") {
+                dynamic_cast<Door*>(item)->Interact();
             }
         }
     }

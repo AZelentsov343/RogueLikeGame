@@ -41,6 +41,8 @@ public:
 
     bool collidable() const { return is_collidable; }
 
+    bool isInteractive() const { return interactive; }
+
 protected:
 
     unsigned char updates = 0;
@@ -50,12 +52,15 @@ protected:
 
     virtual void onUpdate();
 
+    double distanceTo(Sprite *other) const;
+
     Image image;
     int width;
     int height;
     Point coords;
     const std::string id;
     bool is_collidable;
+    bool interactive = false;
 
     RenderPriority priority;
 

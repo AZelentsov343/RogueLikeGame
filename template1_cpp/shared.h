@@ -5,7 +5,9 @@
 #ifndef MAIN_SHARED_H
 #define MAIN_SHARED_H
 
+#include <cmath>
 #include <GLFW/glfw3.h>
+
 
 constexpr GLsizei WINDOW_WIDTH = 1024, WINDOW_HEIGHT = 1024;
 constexpr int tileSize = 32;
@@ -40,6 +42,13 @@ public:
 struct Point {
     int x;
     int y;
+
+    double distanceTo(Point other) const {
+        int xdist = (x - other.x) * (x - other.x);
+        int ydist = (y - other.y) * (y - other.y);
+
+        return std::sqrt(xdist + ydist);
+    }
 };
 
 enum RenderPriority {
