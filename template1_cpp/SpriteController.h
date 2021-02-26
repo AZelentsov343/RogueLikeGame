@@ -14,20 +14,23 @@ class SpriteController {
 public:
     SpriteController() : screen(WINDOW_WIDTH, WINDOW_HEIGHT, 4) {}
 
-    void addSprite(const Sprite& sprite);
+    void addSprite(Sprite* sprite);
+
+    static bool registerCollision(Sprite* first, Sprite* second);
 
     Pixel* Data() const { return screen.Data(); }
 
     void update();
 
-    Image screen;
+    std::vector<Sprite*> collidable;
+
 private:
-    std::vector<Sprite> background_queue;
 
-    std::vector<Sprite> foreground_queue;
+    Image screen;
 
+    std::vector<Sprite*> background_queue;
 
-
+    std::vector<Sprite*> foreground_queue;
 };
 
 

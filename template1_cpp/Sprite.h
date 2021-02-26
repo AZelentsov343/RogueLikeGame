@@ -15,17 +15,19 @@
 
 class Sprite {
 public:
-    Sprite(const std::string& file, Point coords, RenderPriority p = RenderPriority::BACKGROUND);
+    Sprite(std::string id, const std::string &file, Point coords, RenderPriority p = RenderPriority::BACKGROUND,
+           bool collidable = false);
 
-    Sprite(int width, int height, Point coords, RenderPriority p = RenderPriority::BACKGROUND);
+    explicit Sprite(std::string id, int width = tileSize, int height = tileSize, Point coords = {0, 0},
+                    RenderPriority p = RenderPriority::BACKGROUND, bool collidable = false);
 
     Sprite(const Sprite &other) noexcept;
 
-    Sprite(Sprite&& other) noexcept;
+    Sprite(Sprite &&other) noexcept;
 
     void cutSprite(int x_st, int y_st, int x_fin, int y_fin);
 
-    void DrawThis(Image& screen);
+    void DrawThis(Image &screen);
 
     RenderPriority prior() const { return priority; }
 
@@ -33,19 +35,27 @@ public:
 
     int getHeight() const { return height; }
 
-private:
+    Point getCoords() const { return coords; }
+
+    std::string getID() const { return id; }
+
+    bool collidable() const { return is_collidable; }
+
+protected:
 
     unsigned char updates = 0;
     unsigned char update_freq = 100u;
 
     void validate_this() const;
 
-    void updating();
+    void onUpdate();
 
     Image image;
     int width;
     int height;
     Point coords;
+    const std::string id;
+    bool is_collidable;
 
     RenderPriority priority;
 

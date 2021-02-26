@@ -9,6 +9,13 @@
 constexpr GLsizei WINDOW_WIDTH = 1024, WINDOW_HEIGHT = 1024;
 constexpr int tileSize = 32;
 
+enum class MovementDir {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
 
 struct Pixel {
     uint8_t r;
@@ -23,8 +30,8 @@ struct Point {
 };
 
 enum RenderPriority {
-    FOREGROUND,
-    BACKGROUND
+    BACKGROUND,
+    FOREGROUND
 };
 
 #endif //MAIN_SHARED_H

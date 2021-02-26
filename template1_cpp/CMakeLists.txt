@@ -11,7 +11,7 @@ set(SOURCE_FILES
         outer_includes/glad.c
         Image.cpp
         Player.cpp
-        main.cpp Movable.cpp Movable.h Sprite.cpp Sprite.h shared.h SpriteController.cpp SpriteController.h)
+        main.cpp Sprite.cpp Sprite.h shared.h SpriteController.cpp SpriteController.h MovingSprite.cpp MovingSprite.h)
 
 set(ADDITIONAL_INCLUDE_DIRS
         dependencies/include/GLAD)

@@ -2,31 +2,12 @@
 #define MAIN_PLAYER_H
 
 #include "Image.h"
+#include "MovingSprite.h"
 #include "shared.h"
 
-enum class MovementDir {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
 
-struct Player {
-    explicit Player(Point pos = {.x = 10, .y = 10}) :
-            coords(pos), old_coords(coords) {};
-
-    bool Moved() const;
-
-    void ProcessInput(MovementDir dir);
-
-    void Draw(Image &screen);
-
-private:
-    Point coords{.x = 10, .y = 10};
-    Point old_coords{.x = 10, .y = 10};
-    Pixel color{.r = 255, .g = 255, .b = 0, .a = 255};
-    Image avatar{"../resources/tex.png"};
-    int move_speed = 4;
+struct Player : public MovingSprite {
+    Player(std::string id, const std::string& file, Point coords, int move_speed = 4);
 
 };
 
