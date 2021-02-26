@@ -11,11 +11,22 @@
 #include <iostream>
 
 
-Image::Image(const std::string &a_path) {
+Image::Image(const std::string &a_path, int a_width, int a_height, int a_channels) {
     if ((data = (Pixel *) stbi_load(a_path.c_str(), &width, &height, &channels, sizeof(Pixel))) != nullptr) {
         size = width * height;
         shown_size = size;
         shown_data = data;
+    } else {
+        data = new Pixel[a_width * a_height]{};
+        width = a_width;
+        height = a_height;
+        size = a_width * a_height;
+        channels = a_channels;
+        self_allocated = true;
+        shown_size = size;
+        shown_data = data;
+
+        makeDefault();
     }
 }
 

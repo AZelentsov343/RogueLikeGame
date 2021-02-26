@@ -8,7 +8,7 @@
 constexpr Pixel backgroundColor{0, 0, 0, 0};
 
 struct Image {
-    explicit Image(const std::string &a_path);
+    explicit Image(const std::string &a_path, int a_width = WINDOW_WIDTH, int a_height = WINDOW_HEIGHT, int a_channels = 4);
 
     Image(int a_width, int a_height, int a_channels);
 

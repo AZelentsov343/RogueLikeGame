@@ -8,6 +8,7 @@
 #define GLFW_DLL
 
 #include <fstream>
+#include <string>
 #include <GLFW/glfw3.h>
 #include "shared.h"
 
@@ -163,8 +164,6 @@ int main(int argc, char **argv) {
 
     bool next_level = true;
 
-    Image last_screen(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
-
     for (auto& levelFile : levels) {
         if (!next_level) {
             break;
@@ -232,8 +231,10 @@ int main(int argc, char **argv) {
         if (!sc.didPass()) {
             next_level = false;
         }
-    }
 
+        sc.curScreen().Save("screen.png");
+    }
+    system("rm screen.png");
     glfwTerminate();
     return 0;
 }

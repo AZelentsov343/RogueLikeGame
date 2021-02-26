@@ -15,7 +15,7 @@
 
 class SpriteController {
 public:
-    explicit SpriteController() : screen(WINDOW_WIDTH, WINDOW_HEIGHT, 4) {}
+    SpriteController() : screen("screen.png") {}
 
     void addSprite(Sprite* sprite);
 
