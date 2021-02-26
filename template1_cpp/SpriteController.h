@@ -33,6 +33,8 @@ public:
 
     std::vector<Sprite*> interactive;
 
+    std::vector<Sprite*> enemies;
+
     Sprite* getPlayer() const { return player; }
 
     bool died() const { return updates_to_die <= 0; }

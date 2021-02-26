@@ -5,6 +5,7 @@
 #include "MovingSprite.h"
 
 #include <utility>
+#include <iostream>
 
 MovingSprite::MovingSprite(std::string id, const std::string &file, Point coords, RenderPriority p, int move_speed)
         : Sprite(std::move(id), file, coords, p),
@@ -30,6 +31,7 @@ void MovingSprite::move(MovementDir dir) {
     if (controller->isUpdating()) {
         return;
     }
+
     int move_dist = move_speed * 1;
     switch (dir) {
         case MovementDir::UP:

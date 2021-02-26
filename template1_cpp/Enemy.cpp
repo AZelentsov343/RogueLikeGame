@@ -1,47 +1,51 @@
+//
+// Created by azelentsov on 27.02.2021.
+//
+
 #include <iostream>
-#include <utility>
-#include "Player.h"
-#include "Door.h"
+#include "Enemy.h"
 
-
-Player::Player(const std::string &file, Point coords, int move_speed)
-        : MovingSprite("player", file, coords, RenderPriority::FOREGROUND, move_speed) {
+Enemy::Enemy(const std::string &file, Point coords, int move_speed)
+        : MovingSprite("enemy", file, coords, RenderPriority::FOREGROUND, move_speed) {
+    interactive = true;
+    is_collidable = true;
     cutSprite({32, 0}, {64, 32});
     lastMoveDir = MovementDir::DOWN;
 }
 
-void Player::DrawThis(Image &screen) {
-    onUpdate();
-
-    for (int i = coords.x; i < coords.x + width; i++) {
-        for (int j = coords.y; j < coords.y + height; j++) {
-            Pixel pix = image.GetPixel(i - coords.x, j - coords.y);
-            if (pix != Pixel{0, 0, 0, 0}) {
-                screen.PutPixel(i, j, pix);
-            }
-        }
-    }
-}
-
-void Player::move(MovementDir dir) {
+void Enemy::move(MovementDir dir) {
     MovingSprite::move(dir);
 
     lastMoveDir = dir;
 }
 
-void Player::Interact() {
-    for (Sprite* item : controller->interactive) {
-        double dist = distanceTo(item);
-        if (dist < width + height) {
-            if (item->getID() == "door") {
-                dynamic_cast<Door*>(item)->Interact();
-            }
-        }
+void Enemy::chase() {
+    Point destination = {player->getCoords().x + player->getWidth() / 2, player->getCoords().y + player->getHeight() / 2};
+
+    Point center = {coords.x + width / 2, coords.y + height / 2};
+
+    int horDiff = destination.x - center.x;
+
+    MovementDir hor = horDiff > 0 ? MovementDir::RIGHT : MovementDir::LEFT;
+
+    int vertDiff = destination.y - center.y;
+
+    MovementDir ver = vertDiff > 0 ? MovementDir::UP : MovementDir::DOWN;
+
+    move(hor);
+    move(ver);
+
+    if (intersects(player, coords)) {
+        controller->registerCollision(this, player);
     }
+
 }
 
+void Enemy::onUpdate() {
+    if (player) {
+        chase();
+    }
 
-void Player::onUpdate() {
     MovingSprite::onUpdate();
 
     if (lastMoveDir == MovementDir::UP) {
@@ -66,3 +70,5 @@ void Player::onUpdate() {
         cutSprite({32, start.y}, {64, finish.y});
     }
 }
+
+

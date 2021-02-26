@@ -53,21 +53,16 @@ void Sprite::cutSprite(Point _start, Point end) {
 
 void Sprite::DrawThis(Image &screen) {
     onUpdate();
-    //std::cout << image.Width() << " " << image.Height() << std::endl;
-    //std::cout << width << " " << height << std::endl;
 
-    /*if (priority == RenderPriority::FOREGROUND) {
-        std::cout << coords.x << " " << coords.y << std::endl;
-        std::cout << width << " " << height << std::endl;
-    }*/
     for (int i = coords.x; i < coords.x + width; i++) {
         for (int j = coords.y; j < coords.y + height; j++) {
             Pixel pix = image.GetPixel(i - coords.x, j - coords.y);
             if (pix != Pixel{0, 0, 0, 0}) {
-                screen.PutPixel(i, coords.y + height - (j - coords.y) - 1, pix);
+                screen.PutPixel(i, rotatedVertically ? coords.y + height - (j - coords.y) - 1 : j, pix);
             }
         }
     }
+
 }
 
 void Sprite::onUpdate() {

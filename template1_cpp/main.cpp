@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "SpriteController.h"
 #include "Door.h"
+#include "Enemy.h"
 
 #define GLFW_DLL
 
@@ -188,7 +189,7 @@ int main(int argc, char **argv) {
                 } else if (level[index] == '@') {
                     auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
                     sc.addSprite(sp);
-                    auto player = new Player("../resources/player.png", {i, WINDOW_HEIGHT - tileSize - j}, 6);
+                    auto player = new Player("../resources/player.png", {i, WINDOW_HEIGHT - tileSize - j}, 2);
                     sc.addPlayer(player);
                     player->setController(&sc);
                 } else if (level[index] == 'X') {
@@ -198,6 +199,16 @@ int main(int argc, char **argv) {
                 } else if (level[index] == 'D') {
                     auto door = new Door("../resources/door.png", {i, WINDOW_HEIGHT - tileSize - j});
                     sc.addSprite(door);
+                } else if (level[index] == 'E') {
+                    auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
+                    sc.addSprite(sp);
+                    auto enemy = new Enemy("../resources/enemy.png", {i, WINDOW_HEIGHT - tileSize - j}, 2);
+
+                    enemy->setController(&sc);
+
+                    enemy->followPlayer(sc.getPlayer());
+
+                    sc.addSprite(enemy);
                 }
             }
         }
