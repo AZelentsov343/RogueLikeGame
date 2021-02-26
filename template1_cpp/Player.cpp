@@ -22,6 +22,12 @@ void Player::DrawThis(Image &screen) {
     }
 }
 
+void Player::move(MovementDir dir) {
+    MovingSprite::move(dir);
+
+    lastMoveDir = dir;
+}
+
 void Player::Interact() {
     for (Sprite* item : controller->interactive) {
         double dist = distanceTo(item);
@@ -37,11 +43,21 @@ void Player::Interact() {
 void Player::onUpdate() {
     MovingSprite::onUpdate();
 
+    if (lastMoveDir == MovementDir::UP) {
+        cutSprite({start.x, 96}, {finish.x, 128});
+    } else if (lastMoveDir == MovementDir::DOWN) {
+        cutSprite({start.x, 0}, {finish.x, 32});
+    } else if (lastMoveDir == MovementDir::RIGHT) {
+        cutSprite({start.x, 64}, {finish.x, 96});
+    } else { // lastMoveDir == MovementDir::LEFT
+        cutSprite({start.x, 32}, {finish.x, 64});
+    }
+
     if (updates % update_freq == 0 && didMoved()) {
         if (start.x == 0) {
             cutSprite({32, start.y}, {64, finish.y});
         } else if (start.x == 32) {
-            cutSprite({64, start.y}, {92, finish.y});
+            cutSprite({64, start.y}, {96, finish.y});
         } else if (start.x == 64) {
             cutSprite({0, start.y}, {32, finish.y});
         }

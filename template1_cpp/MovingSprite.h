@@ -15,7 +15,7 @@ public:
 
     void setController(SpriteController* newController) { this->controller = newController;}
 
-    void move(MovementDir dir);
+    virtual void move(MovementDir dir);
 
     bool didMoved() const;
 

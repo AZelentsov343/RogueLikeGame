@@ -32,7 +32,14 @@ Image::Image(int a_width, int a_height, int a_channels) {
     makeDefault();
 }
 
+
 Image::Image(const Image &other) {
+    if (self_allocated) {
+        if (shown_data != data) {
+            delete[] data;
+        }
+        delete[] data;
+    }
     data = new Pixel[other.size]{};
     for (int i = 0; i < other.size; i++) {
         data[i] = other.data[i];
@@ -54,6 +61,7 @@ Image::Image(const Image &other) {
     channels = other.channels;
     self_allocated = true;
 }
+
 
 void Image::makeDefault() {
     for (int i = 0; i < height; i++) {

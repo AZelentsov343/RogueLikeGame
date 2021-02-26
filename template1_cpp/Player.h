@@ -13,10 +13,14 @@ public:
 
     void onUpdate() override;
 
+    void move(MovementDir dir) override;
+
     void Interact();
 
 private:
     int update_freq = 20u;
+
+    MovementDir lastMoveDir;
 
 };
 

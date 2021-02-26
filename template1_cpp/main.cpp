@@ -131,6 +131,7 @@ int main(int argc, char **argv) {
     if (!glfwInit())
         return -1;
 
+
 //	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 //	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 //	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -158,69 +159,79 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    //Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
-    //Player player("player", "../resources/player.png", starting_pos, 4);
+    std::vector<std::string> levels = {"../level_tunnel.txt", "../level_drunkards.txt"};
 
-    //Sprite background("../resources/floor32x32.png", {0, 512});
-    //background.cutSprite(0, 0, 32, 32);
-    std::string level = read_level("../level_tunnel.txt");
-    SpriteController sc;
+    bool next_level = true;
 
-    for (int j = 0; j < WINDOW_HEIGHT; j += tileSize) {
-        for (int i = 0; i < WINDOW_WIDTH; i += tileSize) {
-            int index = (j / tileSize) * (WINDOW_HEIGHT / tileSize) + (i / tileSize);
-            if (level[index] == '.') {
-                auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
-                sc.addSprite(sp);
-            } else if (level[index] == ' ') {
-                auto sp = new Sprite("hole", "../resources/pit32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
-                                     RenderPriority::BACKGROUND, true);
-                sc.addSprite(sp);
-            } else if (level[index] == '#') {
-                auto sp = new Sprite("wall", "../resources/wall32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
-                                     RenderPriority::BACKGROUND, true);
-                sc.addSprite(sp);
-            } else if (level[index] == '@') {
-                auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
-                sc.addSprite(sp);
-                auto player = new Player("../resources/player.png", {i, WINDOW_HEIGHT - tileSize - j}, 4);
-                sc.addPlayer(player);
-                player->setController(&sc);
-            } else if (level[index] == 'X') {
-                auto sp = new Sprite("exit", "../resources/exit32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
-                                     RenderPriority::BACKGROUND, true);
-                sc.addSprite(sp);
-            } else if (level[index] == 'D') {
-                auto door = new Door("../resources/door.png", {i, WINDOW_HEIGHT - tileSize - j});
-                sc.addSprite(door);
+    Image last_screen(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
+
+    for (auto& levelFile : levels) {
+        if (!next_level) {
+            break;
+        }
+        std::string level = read_level(levelFile);
+        SpriteController sc;
+
+        for (int j = 0; j < WINDOW_HEIGHT; j += tileSize) {
+            for (int i = 0; i < WINDOW_WIDTH; i += tileSize) {
+                int index = (j / tileSize) * (WINDOW_HEIGHT / tileSize) + (i / tileSize);
+                if (level[index] == '.') {
+                    auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
+                    sc.addSprite(sp);
+                } else if (level[index] == ' ') {
+                    auto sp = new Sprite("hole", "../resources/pit32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
+                                         RenderPriority::BACKGROUND, true);
+                    sc.addSprite(sp);
+                } else if (level[index] == '#') {
+                    auto sp = new Sprite("wall", "../resources/wall32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
+                                         RenderPriority::BACKGROUND, true);
+                    sc.addSprite(sp);
+                } else if (level[index] == '@') {
+                    auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
+                    sc.addSprite(sp);
+                    auto player = new Player("../resources/player.png", {i, WINDOW_HEIGHT - tileSize - j}, 6);
+                    sc.addPlayer(player);
+                    player->setController(&sc);
+                } else if (level[index] == 'X') {
+                    auto sp = new Sprite("exit", "../resources/exit32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
+                                         RenderPriority::BACKGROUND, true);
+                    sc.addSprite(sp);
+                } else if (level[index] == 'D') {
+                    auto door = new Door("../resources/door.png", {i, WINDOW_HEIGHT - tileSize - j});
+                    sc.addSprite(door);
+                }
             }
         }
-    }
 
-    //Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
+        //Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
-    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    GL_CHECK_ERRORS;
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    GL_CHECK_ERRORS;
-
-    //game loop
-    while (!glfwWindowShouldClose(window)) {
-        GLfloat currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
-        glfwPollEvents();
-
-        processPlayerMovement(dynamic_cast<Player *>(sc.getPlayer()));
-        sc.update();
-
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         GL_CHECK_ERRORS;
-        glDrawPixels(WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, sc.Data());
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         GL_CHECK_ERRORS;
 
-        glfwSwapBuffers(window);
+        //game loop
+        while (!glfwWindowShouldClose(window) && !sc.died()) {
+            GLfloat currentFrame = glfwGetTime();
+            deltaTime = currentFrame - lastFrame;
+            lastFrame = currentFrame;
+            glfwPollEvents();
+
+            processPlayerMovement(dynamic_cast<Player *>(sc.getPlayer()));
+            sc.update();
+
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            GL_CHECK_ERRORS;
+            glDrawPixels(WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, sc.Data());
+            GL_CHECK_ERRORS;
+
+            glfwSwapBuffers(window);
+        }
+
+        if (!sc.didPass()) {
+            next_level = false;
+        }
     }
 
     glfwTerminate();

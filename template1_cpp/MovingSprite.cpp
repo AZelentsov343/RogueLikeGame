@@ -27,6 +27,9 @@ void MovingSprite::stopY() {
 }
 
 void MovingSprite::move(MovementDir dir) {
+    if (controller->isUpdating()) {
+        return;
+    }
     int move_dist = move_speed * 1;
     switch (dir) {
         case MovementDir::UP:
@@ -36,7 +39,7 @@ void MovingSprite::move(MovementDir dir) {
 
             for (auto sprite : controller->collidable) {
                 if (intersects(sprite, {coords.x, coords.y + move_dist})) {
-                    move_dist = SpriteController::registerCollision(this, sprite) ? move_dist : 0;
+                    move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
                 }
             }
 
@@ -49,7 +52,7 @@ void MovingSprite::move(MovementDir dir) {
             }
             for (auto sprite : controller->collidable) {
                 if (intersects(sprite, {coords.x, coords.y - move_dist})) {
-                    move_dist = SpriteController::registerCollision(this, sprite) ? move_dist : 0;
+                    move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
                 }
             }
             old_coords.y = coords.y;
@@ -62,7 +65,7 @@ void MovingSprite::move(MovementDir dir) {
             }
             for (auto sprite : controller->collidable) {
                 if (intersects(sprite, {coords.x - move_dist, coords.y})) {
-                    move_dist = SpriteController::registerCollision(this, sprite) ? move_dist : 0;
+                    move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
                 }
             }
             old_coords.x = coords.x;
@@ -74,7 +77,7 @@ void MovingSprite::move(MovementDir dir) {
             }
             for (auto sprite : controller->collidable) {
                 if (intersects(sprite, {coords.x + move_dist, coords.y})) {
-                    move_dist = SpriteController::registerCollision(this, sprite) ? move_dist : 0;
+                    move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
                 }
             }
             old_coords.x = coords.x;

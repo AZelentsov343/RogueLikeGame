@@ -43,6 +43,8 @@ public:
 
     bool isInteractive() const { return interactive; }
 
+    void rotateVertically() { rotatedVertically = true; }
+
 protected:
 
     unsigned char updates = 0;
@@ -53,6 +55,8 @@ protected:
     virtual void onUpdate();
 
     double distanceTo(Sprite *other) const;
+
+    bool rotatedVertically = false;
 
     Image image;
     int width;

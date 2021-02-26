@@ -109,9 +109,9 @@ if __name__ == '__main__':
                 #level[i][j] = random.choice(['#', ' ']) # prob=[0.7, 0.3])
             else:
                 level[i][j] = '.'
-    f = open('template1_cpp/level.txt', 'w')
+    f = open('template1_cpp/level_drunkards.txt', 'w')
     for k in level:
-        f.write(''.join(k))
+        f.write(''.join(k)+'\n')
         print(k)
     f.close()
     #print(level)
