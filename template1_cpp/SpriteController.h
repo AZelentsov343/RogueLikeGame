@@ -16,6 +16,8 @@ public:
 
     void addSprite(Sprite* sprite);
 
+    void addPlayer(Sprite* player);
+
     static bool registerCollision(Sprite* first, Sprite* second);
 
     Pixel* Data() const { return screen.Data(); }
@@ -24,9 +26,13 @@ public:
 
     std::vector<Sprite*> collidable;
 
+    Sprite* getPlayer() const { return player; }
+
 private:
 
     Image screen;
+
+    Sprite* player = nullptr;
 
     std::vector<Sprite*> background_queue;
 

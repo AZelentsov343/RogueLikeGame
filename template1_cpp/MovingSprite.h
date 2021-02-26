@@ -5,7 +5,6 @@
 #ifndef MAIN_MOVINGSPRITE_H
 #define MAIN_MOVINGSPRITE_H
 
-#include "Sprite.h"
 #include "SpriteController.h"
 
 
@@ -19,6 +18,10 @@ public:
     void move(MovementDir dir);
 
     bool didMoved() const;
+
+    virtual void stopX();
+
+    virtual void stopY();
 
 protected:
 

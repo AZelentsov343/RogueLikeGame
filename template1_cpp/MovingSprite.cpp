@@ -18,6 +18,14 @@ bool MovingSprite::didMoved() const {
         return true;
 }
 
+void MovingSprite::stopX() {
+    old_coords.x = coords.x;
+}
+
+void MovingSprite::stopY() {
+    old_coords.y = coords.y;
+}
+
 void MovingSprite::move(MovementDir dir) {
     int move_dist = move_speed * 1;
     switch (dir) {
@@ -78,10 +86,10 @@ void MovingSprite::move(MovementDir dir) {
 }
 
 bool MovingSprite::intersects(Sprite *other, Point new_coords) const {
-    if (other->getCoords().x + other->getWidth() <= new_coords.x || new_coords.x + width <= other->getCoords().x) {
+    if (other->getCoords().x + other->getWidth() <= new_coords.x + 3 || new_coords.x + width <= other->getCoords().x + 3) {
         return false;
     }
-    if (other->getCoords().y + other->getHeight() <= new_coords.y || new_coords.y + height <= other->getCoords().y) {
+    if (other->getCoords().y + other->getHeight() <= new_coords.y + 3 || new_coords.y + height <= other->getCoords().y + 3) {
         return false;
     }
     return true;

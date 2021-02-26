@@ -119,7 +119,7 @@ if __name__ == '__main__':
                 level[i][j] = '.'
     f = open('template1_cpp/level_tunnel.txt', 'w')
     for k in level:
-        f.write(''.join(k))
+        f.write(''.join(k)+'\n')
         print(k)
     f.close()
     #print(level)

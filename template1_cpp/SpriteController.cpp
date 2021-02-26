@@ -17,6 +17,10 @@ void SpriteController::addSprite(Sprite* sprite) {
     }
 }
 
+void SpriteController::addPlayer(Sprite* pl) {
+    player = pl;
+}
+
 
 void SpriteController::update() {
 
@@ -28,12 +32,20 @@ void SpriteController::update() {
     for (auto sprite : foreground_queue) {
         sprite->DrawThis(screen);
     }
+
+    player->DrawThis(screen);
 }
 
 bool SpriteController::registerCollision(Sprite *first, Sprite *second) {
     if (first->getID() == "player" && second->getID() == "wall") {
         //std::cout << "Wall collision registered" << std::endl;
         return false;
+    } else if (first->getID() == "player" && second->getID() == "exit") {
+        std::cout << "You won!" << std::endl;
+        return true;
+    } else if (first->getID() == "player" && second->getID() == "hole") {
+        std::cout << "You lost!" << std::endl;
+        return true;
     }
     return true;
 }

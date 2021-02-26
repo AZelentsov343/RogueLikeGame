@@ -74,7 +74,7 @@ void Image::cutOut(int x_start, int y_start, int x_fin, int y_fin) {
     shown_size = sizeOfCut;
     for (int x = x_start; x < x_fin; x++) {
         for (int y = y_start; y < y_fin; y++) {
-            new_data[index(x - x_start, y - y_start)] = data[index(x, y)];
+            new_data[index(x - x_start, (y_fin - y_start) - (y - y_start))] = data[index(x, y)];
         }
     }
 

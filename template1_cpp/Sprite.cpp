@@ -41,11 +41,11 @@ Sprite::Sprite(Sprite &&other) noexcept: id(other.id), image(other.image), coord
                                          width(other.width), height(other.height), start(other.start),
                                          finish(other.finish), is_collidable(other.is_collidable) {}
 
-void Sprite::cutSprite(int x_st, int y_st, int x_fin, int y_fin) {
-    image.cutOut(x_st, y_st, x_fin, y_fin);
+void Sprite::cutSprite(Point _start, Point end) {
+    image.cutOut(_start.x, _start.y, end.x, end.y);
 
-    start = {x_st, y_st};
-    finish = {x_fin, y_fin};
+    start = _start;
+    finish = end;
 
     width = finish.x - start.x;
     height = finish.y - start.y;

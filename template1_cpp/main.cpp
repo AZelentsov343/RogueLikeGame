@@ -43,15 +43,19 @@ void OnKeyboardPressed(GLFWwindow *window, int key, int scancode, int action, in
     }
 }
 
-void processPlayerMovement(Player &player) {
+void processPlayerMovement(Player *player) {
     if (Input.keys[GLFW_KEY_W])
-        player.move(MovementDir::UP);
+        player->move(MovementDir::UP);
     else if (Input.keys[GLFW_KEY_S])
-        player.move(MovementDir::DOWN);
+        player->move(MovementDir::DOWN);
+    else
+        player->stopY();
     if (Input.keys[GLFW_KEY_A])
-        player.move(MovementDir::LEFT);
+        player->move(MovementDir::LEFT);
     else if (Input.keys[GLFW_KEY_D])
-        player.move(MovementDir::RIGHT);
+        player->move(MovementDir::RIGHT);
+    else
+        player->stopX();
 }
 
 void OnMouseButtonClicked(GLFWwindow *window, int button, int action, int mods) {
@@ -147,14 +151,13 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
-    Player player("player", "../resources/ground32x32.png", starting_pos, 4);
+    //Point starting_pos{.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2};
+    //Player player("player", "../resources/player.png", starting_pos, 4);
 
     //Sprite background("../resources/floor32x32.png", {0, 512});
     //background.cutSprite(0, 0, 32, 32);
     std::string level = read_level("../level_tunnel.txt");
     SpriteController sc;
-
 
     for (int j = 0; j < WINDOW_HEIGHT; j += tileSize) {
         for (int i = 0; i < WINDOW_WIDTH; i += tileSize) {
@@ -170,12 +173,19 @@ int main(int argc, char **argv) {
                 auto sp = new Sprite("wall", "../resources/ground32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
                                      RenderPriority::BACKGROUND, true);
                 sc.addSprite(sp);
+            } else if (level[index] == '@') {
+                auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
+                sc.addSprite(sp);
+                auto player = new Player("../resources/player.png", {i, WINDOW_HEIGHT - tileSize - j}, 4);
+                sc.addPlayer(player);
+                player->setController(&sc);
+            } else if (level[index] == 'X') {
+                auto sp = new Sprite("exit", "../resources/exit32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
+                                     RenderPriority::BACKGROUND, true);
+                sc.addSprite(sp);
             }
         }
     }
-
-    sc.addSprite(&player);
-    player.setController(&sc);
 
     //Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
@@ -191,11 +201,9 @@ int main(int argc, char **argv) {
         lastFrame = currentFrame;
         glfwPollEvents();
 
-        processPlayerMovement(player);
+        processPlayerMovement(dynamic_cast<Player *>(sc.getPlayer()));
         sc.update();
-        //background1.DrawThis(screenBuffer);
-        //background2.DrawThis(screenBuffer);
-        //player.Draw(sc.screen);
+
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         GL_CHECK_ERRORS;

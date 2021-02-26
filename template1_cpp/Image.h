@@ -32,7 +32,7 @@ struct Image {
 
     void PutPixel(int x, int y, const Pixel &pix) { shown_data[index(x, y)] = pix; }
 
-    int index(int x, int y) const {return height * y + x;}
+    int index(int x, int y) const {return width * y + x;}
 
     void makeDefault();
 

@@ -1,13 +1,20 @@
 #ifndef MAIN_PLAYER_H
 #define MAIN_PLAYER_H
 
-#include "Image.h"
 #include "MovingSprite.h"
 #include "shared.h"
 
 
-struct Player : public MovingSprite {
-    Player(std::string id, const std::string& file, Point coords, int move_speed = 4);
+class Player : public MovingSprite {
+public:
+    Player(const std::string& file, Point coords, int move_speed = 4);
+
+    void DrawThis(Image &screen) override;
+
+    void onUpdate() override;
+
+private:
+    int update_freq = 20u;
 
 };
 

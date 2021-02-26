@@ -25,9 +25,9 @@ public:
 
     Sprite(Sprite &&other) noexcept;
 
-    void cutSprite(int x_st, int y_st, int x_fin, int y_fin);
+    void cutSprite(Point start, Point end);
 
-    void DrawThis(Image &screen);
+    virtual void DrawThis(Image &screen);
 
     RenderPriority prior() const { return priority; }
 
@@ -48,7 +48,7 @@ protected:
 
     void validate_this() const;
 
-    void onUpdate();
+    virtual void onUpdate();
 
     Image image;
     int width;

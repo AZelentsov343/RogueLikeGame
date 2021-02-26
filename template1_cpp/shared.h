@@ -4,6 +4,7 @@
 
 #ifndef MAIN_SHARED_H
 #define MAIN_SHARED_H
+
 #include <GLFW/glfw3.h>
 
 constexpr GLsizei WINDOW_WIDTH = 1024, WINDOW_HEIGHT = 1024;
@@ -18,10 +19,22 @@ enum class MovementDir {
 
 
 struct Pixel {
+public:
     uint8_t r;
     uint8_t g;
     uint8_t b;
     uint8_t a;
+
+    bool operator==(Pixel other) const {
+        if (r == other.r && g == other.g && b == other.b && a == other.a) {
+            return true;
+        }
+        return false;
+    }
+
+    bool operator!=(Pixel other) const {
+        return !this->operator==(other);
+    }
 };
 
 struct Point {
