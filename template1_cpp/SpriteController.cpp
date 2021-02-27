@@ -113,8 +113,13 @@ bool SpriteController::registerCollision(Sprite *first, Sprite *second, bool fak
             return door->isOpened();
         } else if (first->getID() == "hole") {
             return false;
+        } else if (first->getID() == "enemy") {
+            return true;
+        } else {
+            return true;
         }
     }
+
     if (first->getID() == "player" && second->getID() == "wall") {
         //std::cout << "Wall collision registered" << std::endl;
         return false;

@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Enemy.h"
 #include "Fireball.h"
+#include "PathFinding.h"
 
 Enemy::Enemy(const std::string &file, Point coords, int move_speed)
         : MovingSprite("enemy", file, coords, RenderPriority::FOREGROUND, move_speed) {
@@ -20,11 +21,13 @@ void Enemy::move(MovementDir dir) {
     lastMoveDir = dir;
 }
 
+
 void Enemy::chase() {
 
     if (!player || !valid) {
         return;
     }
+
     Point destination = {player->getCoords().x + player->getWidth() / 2, player->getCoords().y + player->getHeight() / 2};
 
     Point center = {coords.x + width / 2, coords.y + height / 2};
@@ -41,18 +44,19 @@ void Enemy::chase() {
 
     bool thrown_fireball = false;
 
-    if (horDiff != 0 && vertDiff != 0) {
+    if (moves_stack.empty()) {
         move(hor);
         move(ver);
-    } else if (horDiff != 0) {
-        //move(hor);
+    } else {
+        move(moves_stack.top());
+        moves_stack.pop();
+    }
+
+    if (std::abs(vertDiff) < 24 && horDiff != 0) {
         ThrowFireball(hor);
-
         thrown_fireball = true;
-    } else if (vertDiff != 0) {
-        //move(ver);
+    } else if (std::abs(horDiff) < 24 && vertDiff != 0) {
         ThrowFireball(ver);
-
         thrown_fireball = true;
     }
 
@@ -80,6 +84,11 @@ void Enemy::ThrowFireball(MovementDir dir) {
 }
 
 void Enemy::onUpdate() {
+
+    if (updates % 100 == 0) {
+        PathFinding pf(controller, move_speed);
+        moves_stack = pf.findPath(coords, player->getCoords());
+    }
 
     MovingSprite::onUpdate();
 

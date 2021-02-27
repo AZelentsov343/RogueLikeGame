@@ -6,6 +6,7 @@
 #define MAIN_ENEMY_H
 #include <stack>
 #include "MovingSprite.h"
+#include "PathFinding.h"
 
 class Enemy : public MovingSprite {
 public:
@@ -23,7 +24,10 @@ public:
 
     void ThrowFireball(MovementDir dir);
 
+
 private:
+
+    int decisionCount = 0;
 
     std::stack<MovementDir> moves_stack;
 
@@ -34,6 +38,7 @@ private:
     int update_freq = 20u;
 
     MovementDir lastMoveDir;
+
 };
 
 

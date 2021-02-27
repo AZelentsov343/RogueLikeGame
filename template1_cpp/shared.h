@@ -59,7 +59,13 @@ struct Point {
     }
 
     bool operator<(Point other) const {
-        return x < other.x;
+        if (x < other.x) {
+            return true;
+        } else if (x > other.x) {
+            return false;
+        } else {
+            return y < other.y;
+        }
     }
 };
 
