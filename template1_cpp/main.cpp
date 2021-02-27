@@ -5,6 +5,7 @@
 #include "SpriteController.h"
 #include "Door.h"
 #include "Enemy.h"
+#include "Flame.h"
 
 #define GLFW_DLL
 
@@ -218,6 +219,11 @@ int main(int argc, char **argv) {
                     enemy->followPlayer(sc.getPlayer());
 
                     sc.addSprite(enemy);
+                } else if (level[index] == 'F') {
+                    auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
+                    sc.addSprite(sp);
+                    auto flame = new Flame("../resources/flame.png", {i, WINDOW_HEIGHT - tileSize - j});
+                    sc.addSprite(flame);
                 }
             }
         }

@@ -71,6 +71,4 @@ void Fireball::onUpdate() {
             cutSprite({(start.x + 32) % 160, start.y}, {(start.x + 32) % 160 + 32, finish.y});
         }
     }
-
-
 }
