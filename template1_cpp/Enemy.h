@@ -18,6 +18,8 @@ public:
 
     void chase();
 
+    void die() { valid = false; };
+
 private:
 
     Sprite* player = nullptr;
