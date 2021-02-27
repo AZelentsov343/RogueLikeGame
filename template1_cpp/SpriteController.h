@@ -21,7 +21,7 @@ public:
 
     void addPlayer(Sprite* player);
 
-    bool registerCollision(Sprite* first, Sprite* second);
+    bool registerCollision(Sprite* first, Sprite* second, bool fake = false);
 
     Pixel* Data() const { return screen.Data(); }
 

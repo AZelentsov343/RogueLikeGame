@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Enemy.h"
+#include "Fireball.h"
 
 Enemy::Enemy(const std::string &file, Point coords, int move_speed)
         : MovingSprite("enemy", file, coords, RenderPriority::FOREGROUND, move_speed) {
@@ -20,6 +21,10 @@ void Enemy::move(MovementDir dir) {
 }
 
 void Enemy::chase() {
+
+    if (!player || !valid) {
+        return;
+    }
     Point destination = {player->getCoords().x + player->getWidth() / 2, player->getCoords().y + player->getHeight() / 2};
 
     Point center = {coords.x + width / 2, coords.y + height / 2};
@@ -32,8 +37,29 @@ void Enemy::chase() {
 
     MovementDir ver = vertDiff > 0 ? MovementDir::UP : MovementDir::DOWN;
 
-    move(hor);
-    move(ver);
+    old_coords = coords;
+
+    bool thrown_fireball = false;
+
+    if (horDiff != 0 && vertDiff != 0) {
+        move(hor);
+        move(ver);
+    } else if (horDiff != 0) {
+        //move(hor);
+        ThrowFireball(hor);
+
+        thrown_fireball = true;
+    } else if (vertDiff != 0) {
+        //move(ver);
+        ThrowFireball(ver);
+
+        thrown_fireball = true;
+    }
+
+    if (!didMoved() && !thrown_fireball) {
+        ThrowFireball(lastMoveDir);
+    }
+
 
     if (intersects(player, coords)) {
         controller->registerCollision(this, player);
@@ -41,12 +67,24 @@ void Enemy::chase() {
 
 }
 
+void Enemy::ThrowFireball(MovementDir dir) {
+    if (fireballCooldown > 0) {
+        return;
+    }
+    auto fireball = new Fireball("enemy_fireball", "../resources/fireball.png", coords, dir);
+
+    fireball->setController(controller);
+    controller->addSprite(fireball);
+    fireballCooldown = 20;
+
+}
+
 void Enemy::onUpdate() {
 
     MovingSprite::onUpdate();
 
-    if (player) {
-        chase();
+    if (fireballCooldown > 0) {
+        fireballCooldown--;
     }
 
     if (lastMoveDir == MovementDir::UP) {

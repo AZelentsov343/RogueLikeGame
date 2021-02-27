@@ -49,6 +49,18 @@ struct Point {
 
         return std::sqrt(xdist + ydist);
     }
+
+    bool operator==(Point other) const {
+        return (x == other.x) && (y == other.y);
+    }
+
+    bool operator!=(Point other) const {
+        return !this->operator==(other);
+    }
+
+    bool operator<(Point other) const {
+        return x < other.x;
+    }
 };
 
 enum RenderPriority {

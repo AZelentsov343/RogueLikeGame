@@ -4,6 +4,7 @@
 
 #ifndef MAIN_ENEMY_H
 #define MAIN_ENEMY_H
+#include <stack>
 #include "MovingSprite.h"
 
 class Enemy : public MovingSprite {
@@ -18,9 +19,15 @@ public:
 
     void chase();
 
-    void die() { valid = false; };
+    void die() { valid = false; makeUncollidable(); };
+
+    void ThrowFireball(MovementDir dir);
 
 private:
+
+    std::stack<MovementDir> moves_stack;
+
+    int fireballCooldown = 0;
 
     Sprite* player = nullptr;
 

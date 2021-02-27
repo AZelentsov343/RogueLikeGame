@@ -43,7 +43,7 @@ void MovingSprite::move(MovementDir dir) {
             }
 
             for (auto sprite : controller->collidable) {
-                if (intersects(sprite, {coords.x, coords.y + move_dist})) {
+                if (sprite->collidable() && intersects(sprite, {coords.x, coords.y + move_dist})) {
                     move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
                 }
             }
@@ -56,7 +56,7 @@ void MovingSprite::move(MovementDir dir) {
                 move_dist--;
             }
             for (auto sprite : controller->collidable) {
-                if (intersects(sprite, {coords.x, coords.y - move_dist})) {
+                if (sprite->collidable() && intersects(sprite, {coords.x, coords.y - move_dist})) {
                     move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
                 }
             }
@@ -69,7 +69,7 @@ void MovingSprite::move(MovementDir dir) {
                 move_dist--;
             }
             for (auto sprite : controller->collidable) {
-                if (intersects(sprite, {coords.x - move_dist, coords.y})) {
+                if (sprite->collidable() && intersects(sprite, {coords.x - move_dist, coords.y})) {
                     move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
                 }
             }
@@ -81,7 +81,7 @@ void MovingSprite::move(MovementDir dir) {
                 move_dist--;
             }
             for (auto sprite : controller->collidable) {
-                if (intersects(sprite, {coords.x + move_dist, coords.y})) {
+                if (sprite->collidable() && intersects(sprite, {coords.x + move_dist, coords.y})) {
                     move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
                 }
             }

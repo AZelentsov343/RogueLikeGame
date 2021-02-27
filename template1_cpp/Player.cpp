@@ -9,6 +9,7 @@ Player::Player(const std::string &file, Point coords, int move_speed)
         : MovingSprite("player", file, coords, RenderPriority::FOREGROUND, move_speed) {
     cutSprite({32, 0}, {64, 32});
     lastMoveDir = MovementDir::DOWN;
+    is_collidable = true;
 }
 
 

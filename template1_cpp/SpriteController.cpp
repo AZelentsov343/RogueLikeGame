@@ -33,6 +33,8 @@ void SpriteController::addSprite(Sprite *sprite) {
 
 void SpriteController::addPlayer(Sprite *pl) {
     player = pl;
+
+    collidable.push_back(player);
 }
 
 
@@ -56,8 +58,11 @@ void SpriteController::update() {
     } else if (!level_over) {
 
         for (auto enemy : enemies) {
+
             auto realEnemy = dynamic_cast<Enemy*>(enemy);
             realEnemy->followPlayer(player);
+
+            realEnemy->chase();
         }
 
         screen.makeDefault();
@@ -96,9 +101,19 @@ void SpriteController::update() {
 
 }
 
-bool SpriteController::registerCollision(Sprite *first, Sprite *second) {
+bool SpriteController::registerCollision(Sprite *first, Sprite *second, bool fake) {
     if (level_over) {
         return false;
+    }
+    if (fake) {
+        if (first->getID() == "wall") {
+            return false;
+        } else if (first->getID() == "door") {
+            Door *door = dynamic_cast<Door *>(first);
+            return door->isOpened();
+        } else if (first->getID() == "hole") {
+            return false;
+        }
     }
     if (first->getID() == "player" && second->getID() == "wall") {
         //std::cout << "Wall collision registered" << std::endl;
@@ -133,11 +148,12 @@ bool SpriteController::registerCollision(Sprite *first, Sprite *second) {
         auto enemy = dynamic_cast<Enemy *>(first);
         enemy->die();
         return false;
-    } else if (first->getID() == "player_fireball" && second->getID() == "wall") {
+    } else if (first->getID().find("fireball") != std::string::npos && second->getID() == "wall") {
         //std::cout << "Fireball Wall collision" << std::endl;
         auto fireball = dynamic_cast<Fireball *>(first);
         fireball->StartBreaking();
         second->cutSprite({32, 0}, {64, 32});
+        second->makeUncollidable();
         return false;
     } else if (first->getID() == "player_fireball" && second->getID() == "enemy") {
         auto fireball = dynamic_cast<Fireball *>(first);
@@ -145,6 +161,21 @@ bool SpriteController::registerCollision(Sprite *first, Sprite *second) {
 
         auto enemy = dynamic_cast<Enemy *>(second);
         enemy->die();
+        return false;
+    } else if (first->getID() == "enemy_fireball" && second->getID() == "player") {
+        auto fireball = dynamic_cast<Fireball *>(first);
+        fireball->StartBreaking();
+
+        won = false;
+        level_over = true;
+        need_draw = true;
+        return false;
+    } else if (first->getID() == "enemy_fireball" && second->getID() == "player_fireball") {
+        auto fireball = dynamic_cast<Fireball *>(first);
+        fireball->StartBreaking();
+
+        fireball = dynamic_cast<Fireball *>(second);
+        fireball->StartBreaking();
     }
     return true;
 }

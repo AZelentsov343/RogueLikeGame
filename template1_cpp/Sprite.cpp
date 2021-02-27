@@ -53,6 +53,7 @@ void Sprite::cutSprite(Point _start, Point end) {
 
 void Sprite::DrawThis(Image &screen) {
     validate_this();
+    //std::cout << id << " at " << coords.x << " " << coords.y << " starting to draw" << std::endl;
     if (!valid) {
         return;
     }
@@ -68,6 +69,8 @@ void Sprite::DrawThis(Image &screen) {
             }
         }
     }
+
+    //std::cout << id << " at " << coords.x << " " << coords.y << " draw" << std::endl;
 
 }
 

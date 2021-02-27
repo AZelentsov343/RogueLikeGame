@@ -3,6 +3,7 @@
 //
 
 #include "Fireball.h"
+#include <iostream>
 
 Fireball::Fireball(const std::string &id, const std::string &file, Point coords, MovementDir _direction, int move_speed)
         : MovingSprite(id, file, coords, RenderPriority::FOREGROUND, move_speed) {
@@ -21,13 +22,15 @@ Fireball::Fireball(const std::string &id, const std::string &file, Point coords,
 }
 
 void Fireball::StartBreaking() {
+    //std::cout << "Started breaking " << std::endl;
     breaking = true;
     update_freq = 2;
     cutSprite({0, 32}, {32, 64});
+    makeUncollidable();
 }
 
 void Fireball::DrawThis(Image &screen) {
-
+    //std::cout << "Drawing " << std::endl;
     onUpdate();
 
     if (!valid) {
@@ -47,7 +50,12 @@ void Fireball::DrawThis(Image &screen) {
 }
 
 void Fireball::onUpdate() {
+    //std::cout << "Updating " << std::endl;
     MovingSprite::onUpdate();
+
+    if (coords.x == 0 || coords.y == 0 || coords.x > WINDOW_WIDTH - tileSize - 3 || coords.y > WINDOW_HEIGHT - tileSize - 3 ) {
+        StartBreaking();
+    }
     if (breaking) {
         if (updates % update_freq == 0) {
             cutSprite({(start.x + 32) % 160,32}, {(start.x + 32) % 160 + 32, 64});

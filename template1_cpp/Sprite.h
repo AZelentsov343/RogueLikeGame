@@ -46,6 +46,8 @@ public:
 
     void rotateVertically() { rotatedVertically = true; }
 
+    void makeUncollidable() { is_collidable = false; }
+
 protected:
 
     unsigned char updates = 0;

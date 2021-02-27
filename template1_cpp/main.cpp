@@ -167,7 +167,7 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    std::vector<std::string> levels = {"../level_tunnel.txt", "../level_drunkards.txt"};
+    std::vector<std::string> levels = {"../level_tunnel.txt", "../level_drunkards.txt"}; // "../level_tunnel.txt",
 
     bool next_level = true;
 
