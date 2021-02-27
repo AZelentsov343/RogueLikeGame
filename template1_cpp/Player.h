@@ -9,13 +9,13 @@ class Player : public MovingSprite {
 public:
     Player(const std::string& file, Point coords, int move_speed = 4);
 
-    void DrawThis(Image &screen) override;
-
     void onUpdate() override;
 
     void move(MovementDir dir) override;
 
     void Interact();
+
+    void ThrowFireball();
 
 private:
     int update_freq = 20u;

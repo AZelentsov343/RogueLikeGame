@@ -5,6 +5,7 @@
 #include "SpriteController.h"
 #include "Door.h"
 #include "Enemy.h"
+#include "Fireball.h"
 #include <iostream>
 #include <random>
 #include <algorithm>
@@ -128,6 +129,12 @@ bool SpriteController::registerCollision(Sprite *first, Sprite *second) {
         level_over = true;
         need_draw = true;
         return true;
+    } else if (first->getID() == "player_fireball" && second->getID() == "wall") {
+        std::cout << "Fireball Wall collision" << std::endl;
+        auto fireball = dynamic_cast<Fireball *>(first);
+        fireball->StartBreaking();
+        second->cutSprite({32, 0}, {64, 32});
+        return false;
     }
     return true;
 }

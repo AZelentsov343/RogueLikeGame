@@ -8,6 +8,7 @@
 #include <utility>
 #include <stdexcept>
 #include <sstream>
+#include <set>
 
 #include "Image.h"
 #include "shared.h"
@@ -57,6 +58,8 @@ protected:
     double distanceTo(Sprite *other) const;
 
     bool rotatedVertically = false;
+    bool rotatedHorizontally = false;
+    bool rotated90CounterClockwise = false;
 
     Image image;
     int width;
@@ -70,6 +73,9 @@ protected:
 
     Point start{};
     Point finish{};
+
+    bool valid = true;
+
 };
 
 

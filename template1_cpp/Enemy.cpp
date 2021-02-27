@@ -42,11 +42,12 @@ void Enemy::chase() {
 }
 
 void Enemy::onUpdate() {
+
+    MovingSprite::onUpdate();
+
     if (player) {
         chase();
     }
-
-    MovingSprite::onUpdate();
 
     if (lastMoveDir == MovementDir::UP) {
         cutSprite({start.x, 96}, {finish.x, 128});

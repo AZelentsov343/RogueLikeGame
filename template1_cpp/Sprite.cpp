@@ -10,7 +10,7 @@ Sprite::Sprite(std::string id, const std::string &file, Point coords, RenderPrio
         : id(std::move(id)), image(file), coords(coords), priority(p), is_collidable(collidable) {
     width = image.Width();
     height = image.Height();
-    validate_this();
+    //validate_this();
 
     start = Point{0, 0};
     finish = Point{width, height};
@@ -52,13 +52,19 @@ void Sprite::cutSprite(Point _start, Point end) {
 }
 
 void Sprite::DrawThis(Image &screen) {
+    validate_this();
+    if (!valid) {
+        return;
+    }
     onUpdate();
 
     for (int i = coords.x; i < coords.x + width; i++) {
         for (int j = coords.y; j < coords.y + height; j++) {
-            Pixel pix = image.GetPixel(i - coords.x, j - coords.y);
+            Pixel pix = rotated90CounterClockwise ? image.GetPixel(j - coords.y, i - coords.x) : image.GetPixel(
+                    i - coords.x, j - coords.y);
             if (pix != Pixel{0, 0, 0, 0}) {
-                screen.PutPixel(i, rotatedVertically ? coords.y + height - (j - coords.y) - 1 : j, pix);
+                screen.PutPixel(rotatedHorizontally ? coords.x + width - (i - coords.x) - 1 : i,
+                                rotatedVertically ? coords.y + height - (j - coords.y) - 1 : j, pix);
             }
         }
     }

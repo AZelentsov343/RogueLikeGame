@@ -16,8 +16,6 @@ public:
 
     bool isOpened() const { return opened; }
 
-    void DrawThis(Image &screen) override;
-
 private:
 
     void Open();

@@ -64,6 +64,11 @@ void processPlayerMovement(Player *player) {
         Input.keys[GLFW_KEY_SPACE] = false;
         player->Interact();
     }
+
+    if (Input.keys[GLFW_KEY_Q]) {
+        Input.keys[GLFW_KEY_Q] = false;
+        player->ThrowFireball();
+    }
 }
 
 void OnMouseButtonClicked(GLFWwindow *window, int button, int action, int mods) {
@@ -113,6 +118,7 @@ int initGL() {
     std::cout << "press right mouse button to capture/release mouse cursor  " << std::endl;
     std::cout << "W, A, S, D - movement  " << std::endl;
     std::cout << "press SPACE to open doors" << std::endl;
+    std::cout << "press Q to throw fireball" << std::endl;
     std::cout << "press ESC to exit" << std::endl;
 
     return 0;
@@ -183,8 +189,9 @@ int main(int argc, char **argv) {
                                          RenderPriority::BACKGROUND, true);
                     sc.addSprite(sp);
                 } else if (level[index] == '#') {
-                    auto sp = new Sprite("wall", "../resources/wall32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
+                    auto sp = new Sprite("wall", "../resources/wall.png", {i, WINDOW_HEIGHT - tileSize - j},
                                          RenderPriority::BACKGROUND, true);
+                    sp->cutSprite({0, 0}, {32, 32});
                     sc.addSprite(sp);
                 } else if (level[index] == '@') {
                     auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});

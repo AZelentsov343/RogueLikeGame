@@ -28,6 +28,9 @@ void MovingSprite::stopY() {
 }
 
 void MovingSprite::move(MovementDir dir) {
+    if (!controller) {
+        throw std::runtime_error("moving sprite has no contoller attached");
+    }
     if (controller->isUpdating()) {
         return;
     }

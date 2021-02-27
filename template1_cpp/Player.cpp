@@ -2,6 +2,7 @@
 #include <utility>
 #include "Player.h"
 #include "Door.h"
+#include "Fireball.h"
 
 
 Player::Player(const std::string &file, Point coords, int move_speed)
@@ -10,18 +11,6 @@ Player::Player(const std::string &file, Point coords, int move_speed)
     lastMoveDir = MovementDir::DOWN;
 }
 
-void Player::DrawThis(Image &screen) {
-    onUpdate();
-
-    for (int i = coords.x; i < coords.x + width; i++) {
-        for (int j = coords.y; j < coords.y + height; j++) {
-            Pixel pix = image.GetPixel(i - coords.x, j - coords.y);
-            if (pix != Pixel{0, 0, 0, 0}) {
-                screen.PutPixel(i, j, pix);
-            }
-        }
-    }
-}
 
 void Player::move(MovementDir dir) {
     MovingSprite::move(dir);
@@ -38,6 +27,13 @@ void Player::Interact() {
             }
         }
     }
+}
+
+void Player::ThrowFireball() {
+    auto fireball = new Fireball("player_fireball", "../resources/fireball.png", coords, lastMoveDir);
+
+    fireball->setController(controller);
+    controller->addSprite(fireball);
 }
 
 
