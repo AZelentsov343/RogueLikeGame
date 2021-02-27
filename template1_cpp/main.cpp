@@ -167,11 +167,13 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    std::vector<std::string> levels = {"../level_tunnel.txt", "../level_drunkards.txt"}; // "../level_tunnel.txt",
+    std::vector<std::string> levels = {"../level_cellular2.txt", "../level_cellular.txt", "../level_tunnel.txt",
+                                       "../level_tunnel2.txt",
+                                       "../level_drunkards.txt", "../level_drunkards2.txt"};
 
     bool next_level = true;
 
-    for (auto& levelFile : levels) {
+    for (auto &levelFile : levels) {
         if (!next_level) {
             break;
         }
@@ -234,7 +236,9 @@ int main(int argc, char **argv) {
             lastFrame = currentFrame;
             glfwPollEvents();
 
+
             processPlayerMovement(dynamic_cast<Player *>(sc.getPlayer()));
+
             sc.update();
 
 

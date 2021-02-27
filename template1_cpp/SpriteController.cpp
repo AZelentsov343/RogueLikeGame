@@ -56,7 +56,6 @@ void SpriteController::update() {
         }
         initializing_steps--;
     } else if (!level_over) {
-
         for (auto enemy : enemies) {
 
             auto realEnemy = dynamic_cast<Enemy*>(enemy);
@@ -70,6 +69,7 @@ void SpriteController::update() {
         for (auto sprite : background_queue) {
             sprite->DrawThis(screen);
         }
+
         for (auto sprite : foreground_queue) {
             sprite->DrawThis(screen);
         }
@@ -109,8 +109,9 @@ bool SpriteController::registerCollision(Sprite *first, Sprite *second, bool fak
         if (first->getID() == "wall") {
             return false;
         } else if (first->getID() == "door") {
-            Door *door = dynamic_cast<Door *>(first);
-            return door->isOpened();
+            //Door *door = dynamic_cast<Door *>(first);
+            //return door->isOpened();
+            return true;
         } else if (first->getID() == "hole") {
             return false;
         } else if (first->getID() == "enemy") {
@@ -150,8 +151,8 @@ bool SpriteController::registerCollision(Sprite *first, Sprite *second, bool fak
         need_draw = true;
         return true;
     } else if (first->getID() == "enemy" && second->getID() == "hole") {
-        auto enemy = dynamic_cast<Enemy *>(first);
-        enemy->die();
+        //auto enemy = dynamic_cast<Enemy *>(first);
+        //enemy->die();
         return false;
     } else if (first->getID().find("fireball") != std::string::npos && second->getID() == "wall") {
         //std::cout << "Fireball Wall collision" << std::endl;
@@ -181,6 +182,10 @@ bool SpriteController::registerCollision(Sprite *first, Sprite *second, bool fak
 
         fireball = dynamic_cast<Fireball *>(second);
         fireball->StartBreaking();
+    } else if (first->getID().find("fireball") != std::string::npos && second->getID() == "door") {
+        Door *door = dynamic_cast<Door *>(second);
+        door->Open();
+        return true;
     }
     return true;
 }

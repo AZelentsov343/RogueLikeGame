@@ -31,6 +31,7 @@ std::stack<MovementDir> PathFinding::findPath(Point from, Point to) const {
     GraphNode* needed;
 
     while (true) {
+        //std::cout << search_q.size() << std::endl;
 
         if (search_q.empty()) {
             return std::stack<MovementDir>();

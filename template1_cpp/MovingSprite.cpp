@@ -94,10 +94,10 @@ void MovingSprite::move(MovementDir dir) {
 }
 
 bool MovingSprite::intersects(Sprite *other, Point new_coords) const {
-    if (other->getCoords().x + other->getWidth() <= new_coords.x + 3 || new_coords.x + width <= other->getCoords().x + 3) {
+    if (other->getCoords().x + other->getWidth() <= new_coords.x + 6 || new_coords.x + width <= other->getCoords().x + 6) {
         return false;
     }
-    if (other->getCoords().y + other->getHeight() <= new_coords.y + 3 || new_coords.y + height <= other->getCoords().y + 3) {
+    if (other->getCoords().y + other->getHeight() <= new_coords.y + 6 || new_coords.y + height <= other->getCoords().y + 6) {
         return false;
     }
     return true;

@@ -16,11 +16,11 @@ public:
 
     bool isOpened() const { return opened; }
 
-private:
-
     void Open();
 
     void Close();
+
+private:
 
     bool opened = false;
 

@@ -110,16 +110,27 @@ if __name__ == '__main__':
         for j in range(len(level[0])):
             if level[i][j] == 1:
                 r = random.random()
-                if r > 1.0:
+                if r > 0.0:
                     level[i][j] = ' '
                 else:
                     level[i][j] = '#'
                 #level[i][j] = random.choice(['#', ' ']) # prob=[0.7, 0.3])
             else:
                 level[i][j] = '.'
-    f = open('template1_cpp/level_tunnel.txt', 'w')
-    for k in level:
-        f.write(''.join(k)+'\n')
+    f = open('template1_cpp/level_tunnel2.txt', 'w')
+    s = ''.join(level[0])+'\n'
+    s = s.replace(' ', '#')
+    f.write(s)
+    print(level[0])
+    for k in level[1:-1]:
+
+        k[0] = '#'
+        k[-1] = '#'
+        s = ''.join(k)+'\n'
+        f.write(s)
         print(k)
+    s = ''.join(level[-1])+'\n'
+    s = s.replace(' ', '#')
+    f.write(s)
+    print(level[-1])
     f.close()
-    #print(level)
