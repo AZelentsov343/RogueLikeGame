@@ -66,8 +66,8 @@ void processPlayerMovement(Player *player) {
         player->Interact();
     }
 
-    if (Input.keys[GLFW_KEY_Q]) {
-        Input.keys[GLFW_KEY_Q] = false;
+    if (Input.keys[GLFW_KEY_ENTER]) {
+        Input.keys[GLFW_KEY_ENTER] = false;
         player->ThrowFireball();
     }
 }
@@ -119,7 +119,7 @@ int initGL() {
     std::cout << "press right mouse button to capture/release mouse cursor  " << std::endl;
     std::cout << "W, A, S, D - movement  " << std::endl;
     std::cout << "press SPACE to open doors" << std::endl;
-    std::cout << "press Q to throw fireball" << std::endl;
+    std::cout << "press ENTER to throw fireball" << std::endl;
     std::cout << "press ESC to exit" << std::endl;
 
     return 0;
@@ -246,7 +246,7 @@ int main(int argc, char **argv) {
             deltaTime = currentFrame - lastFrame;
             lastFrame = currentFrame;
 
-            std::cout << deltaTime << std::endl;
+            //std::cout << deltaTime << std::endl;
             glfwPollEvents();
 
             processPlayerMovement(dynamic_cast<Player *>(sc.getPlayer()));
