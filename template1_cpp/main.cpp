@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    std::vector<std::string> levels = {"../level_tunnel.txt", "../level_cellular2.txt",  "../level_tunnel.txt",
+    std::vector<std::string> levels = {"../level_cellular2.txt", "../level_cellular2.txt",  "../level_tunnel.txt",
                                        "../level_tunnel2.txt",
                                        "../level_drunkards.txt", "../level_drunkards2.txt"};
 
@@ -225,6 +225,7 @@ int main(int argc, char **argv) {
                     auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
                     sc.addSprite(sp);
                     auto flame = new Flame("../resources/flame.png", {i, WINDOW_HEIGHT - tileSize - j});
+                    flame->setController(&sc);
                     sc.addSprite(flame);
                 }
             }

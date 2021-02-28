@@ -17,6 +17,14 @@ void SpriteController::addSprite(Sprite *sprite) {
         foreground_queue.push_back(sprite);
     }
 
+    if (!sprite->Moving()) {
+        for (int i = sprite->getCoords().x; i < sprite->getCoords().x + sprite->getWidth(); i++) {
+            for (int j = sprite->getCoords().y; j < sprite->getCoords().y + sprite->getHeight(); j++) {
+                which[{i, j}].insert(sprite);
+            }
+        }
+    }
+
     if (sprite->getID() == "enemy") {
         enemies.push_back(sprite);
     }
@@ -65,14 +73,18 @@ void SpriteController::update() {
             realEnemy->chase();
         }
 
-        screen.makeDefault();
+        //screen.makeDefault();
 
         for (auto sprite : background_queue) {
-            sprite->DrawThis(screen);
+            if (sprite->needRedraw() || sprite->lighted()) {
+                sprite->DrawThis(screen);
+            }
         }
 
         for (auto sprite : foreground_queue) {
-            sprite->DrawThis(screen);
+            if (sprite->needRedraw()) {
+                sprite->DrawThis(screen);
+            }
         }
 
         player->DrawThis(screen);

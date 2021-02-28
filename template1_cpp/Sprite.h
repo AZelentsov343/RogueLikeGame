@@ -48,6 +48,16 @@ public:
 
     void makeUncollidable() { is_collidable = false; }
 
+    bool Moving() const { return moving; }
+
+    bool needRedraw() const { return need_redraw; }
+
+    void setRedraw() {need_redraw = true; }
+
+    void makeLight() { closeToFire = true; }
+
+    bool lighted() const { return closeToFire; }
+
 protected:
 
     unsigned char updates = 0;
@@ -72,6 +82,7 @@ protected:
     bool interactive = false;
 
     bool need_redraw = true;
+    bool moving = false;
 
     RenderPriority priority;
 
@@ -79,6 +90,8 @@ protected:
     Point finish{};
 
     bool valid = true;
+
+    bool closeToFire = false;
 
 };
 

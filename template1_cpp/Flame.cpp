@@ -12,6 +12,7 @@ Flame::Flame(const std::string &file, Point coords) : Sprite("flame", file, coor
 void Flame::DrawThis(Image &screen) {
     Sprite::DrawThis(screen);
     int radius = 128;
+
     Point center = Point{coords.x + width / 2, coords.y + height / 2};
     for (int i = center.x - radius; i < center.x + radius; i++) {
         for (int j = center.y - radius; j < center.y + radius; j++) {
@@ -23,23 +24,26 @@ void Flame::DrawThis(Image &screen) {
                 continue;
             }
             Pixel pix = screen.GetPixel(i, j);
+            if (firstDraw) {
+                for (Sprite* pointer : sc->which[{i, j}]) {
+                    pointer->makeLight();
+                }
+            }
             if (pix == Pixel{0, 0, 0, 0}) {
                 continue;
             }
+
             if (dist < radius / 4) {
-                Pixel pix = screen.GetPixel(i, j);
                 uint8_t red = static_cast<int>(pix.r) + 64 >= 255 ? 255 : pix.r + 64;
                 uint8_t green = static_cast<int>(pix.g) + 32 >= 255 ? 255 : pix.g + 32;
                 Pixel newPix = Pixel{red, green, pix.b, pix.a};
                 screen.PutPixel(i, j, newPix);
             } else if (dist < radius / 2) {
-                Pixel pix = screen.GetPixel(i, j);
                 uint8_t red = static_cast<int>(pix.r) + 32 >= 255 ? 255 : pix.r + 32;
                 uint8_t green = static_cast<int>(pix.g) + 16 >= 255 ? 255 : pix.g + 16;
                 Pixel newPix = Pixel{red, green, pix.b, pix.a};
                 screen.PutPixel(i, j, newPix);
             } else if (dist < radius) {
-                Pixel pix = screen.GetPixel(i, j);
                 uint8_t red = static_cast<int>(pix.r) + 16 >= 255 ? 255 : pix.r + 16;
                 uint8_t green = static_cast<int>(pix.g) + 8 >= 255 ? 255 : pix.g + 8;
                 Pixel newPix = Pixel{red, green, pix.b, pix.a};
@@ -47,6 +51,8 @@ void Flame::DrawThis(Image &screen) {
             }
         }
     }
+    firstDraw = false;
+    need_redraw = true;
 }
 
 void Flame::onUpdate() {

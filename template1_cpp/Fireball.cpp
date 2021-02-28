@@ -31,6 +31,7 @@ void Fireball::StartBreaking() {
 
 void Fireball::DrawThis(Image &screen) {
     //std::cout << "Drawing " << std::endl;
+
     onUpdate();
 
     if (!valid) {
@@ -47,11 +48,16 @@ void Fireball::DrawThis(Image &screen) {
             }
         }
     }
+    need_redraw = true;
 }
 
 void Fireball::onUpdate() {
     //std::cout << "Updating " << std::endl;
     MovingSprite::onUpdate();
+
+    if (!valid) {
+        return;
+    }
 
     if (coords.x == 0 || coords.y == 0 || coords.x > WINDOW_WIDTH - tileSize - 3 || coords.y > WINDOW_HEIGHT - tileSize - 3 ) {
         StartBreaking();
@@ -62,6 +68,13 @@ void Fireball::onUpdate() {
             movesToBreak--;
             if (movesToBreak == 0) {
                 valid = false;
+                for (int i = coords.x; i < coords.x + width; i++) {
+                    for (int j = coords.y; j < coords.y + height; j++) {
+                        for (Sprite* pointer : controller->which[{i, j}]) {
+                            pointer->setRedraw();
+                        }
+                    }
+                }
             }
         }
     } else {

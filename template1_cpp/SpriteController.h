@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Sprite.h"
+#include <map>
 
 #define INITIAL_STEPS_DEFAULT 255
 #define IN_ONE_TIME ((WINDOW_HEIGHT * WINDOW_WIDTH) / (tileSize * tileSize) / INITIAL_STEPS_DEFAULT)
@@ -44,6 +45,8 @@ public:
     bool isUpdating() const { return updating || initializing_steps > 0 || level_over; }
 
     ~SpriteController();
+
+    std::map<Point, std::set<Sprite*>> which;
 
 private:
 

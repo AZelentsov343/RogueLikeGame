@@ -6,6 +6,7 @@
 #define MAIN_FLAME_H
 
 #include "Sprite.h"
+#include "SpriteController.h"
 
 
 class Flame : public Sprite {
@@ -16,11 +17,19 @@ public:
 
     void DrawThis(Image& screen) override;
 
+    void setController(SpriteController* controller) {sc = controller; }
+
 private:
 
     static bool validate_coords(int i, int j);
 
     int update_freq = 10;
+
+    SpriteController* sc;
+
+    std::map<Point, Pixel> normal_values;
+
+    bool firstDraw = true;
 };
 
 

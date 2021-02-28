@@ -10,7 +10,9 @@
 MovingSprite::MovingSprite(std::string id, const std::string &file, Point coords, RenderPriority p, int move_speed)
         : Sprite(std::move(id), file, coords, p),
           move_speed(move_speed),
-          old_coords(coords) {}
+          old_coords(coords) {
+    moving = true;
+}
 
 bool MovingSprite::didMoved() const {
     if (coords.x == old_coords.x && coords.y == old_coords.y)
@@ -90,6 +92,16 @@ void MovingSprite::move(MovementDir dir) {
             break;
         default:
             break;
+    }
+    for (int i = coords.x - tileSize / 4; i < coords.x + width + tileSize / 4; i++) {
+        for (int j = coords.y - tileSize / 4; j < coords.y + height + tileSize / 4; j++) {
+            if (i < 0 || i >= WINDOW_WIDTH || j < 0 || j >= WINDOW_HEIGHT) {
+                continue;
+            }
+            for (Sprite* pointer : controller->which[{i, j}]) {
+                pointer->setRedraw();
+            }
+        }
     }
 }
 

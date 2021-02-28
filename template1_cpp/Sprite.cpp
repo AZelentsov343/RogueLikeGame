@@ -63,6 +63,10 @@ void Sprite::DrawThis(Image &screen) {
         for (int j = coords.y; j < coords.y + height; j++) {
             Pixel pix = rotated90CounterClockwise ? image.GetPixel(j - coords.y, i - coords.x) : image.GetPixel(
                     i - coords.x, j - coords.y);
+            if (priority == RenderPriority::BACKGROUND) {
+                screen.PutPixel(rotatedHorizontally ? coords.x + width - (i - coords.x) - 1 : i,
+                                rotatedVertically ? coords.y + height - (j - coords.y) - 1 : j, {0, 0, 0, 0});
+            }
             if (pix != Pixel{0, 0, 0, 0}) {
                 screen.PutPixel(rotatedHorizontally ? coords.x + width - (i - coords.x) - 1 : i,
                                 rotatedVertically ? coords.y + height - (j - coords.y) - 1 : j, pix);
@@ -71,7 +75,9 @@ void Sprite::DrawThis(Image &screen) {
     }
 
     //std::cout << id << " at " << coords.x << " " << coords.y << " draw" << std::endl;
-    need_redraw = false;
+    if (!moving && !closeToFire) {
+        need_redraw = false;
+    }
 }
 
 void Sprite::onUpdate() {
