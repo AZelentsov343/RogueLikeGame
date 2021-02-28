@@ -168,8 +168,8 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    std::vector<std::string> levels = {"../level_cellular2.txt", "../level_cellular2.txt",  "../level_tunnel.txt",
-                                       "../level_tunnel2.txt",
+    std::vector<std::string> levels = {"../level_cellular2.txt", "../level_cellular.txt",
+                                       "../level_tunnel.txt", "../level_tunnel2.txt",
                                        "../level_drunkards.txt", "../level_drunkards2.txt"};
 
     bool next_level = true;
@@ -179,7 +179,6 @@ int main(int argc, char **argv) {
             break;
         }
         std::string level = read_level(levelFile);
-        std::cout << level.size() << std::endl;
         SpriteController sc;
 
         for (int j = 0; j < WINDOW_HEIGHT; j += tileSize) {

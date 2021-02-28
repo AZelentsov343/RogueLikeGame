@@ -93,16 +93,18 @@ void MovingSprite::move(MovementDir dir) {
         default:
             break;
     }
+
     for (int i = coords.x - tileSize / 4; i < coords.x + width + tileSize / 4; i++) {
         for (int j = coords.y - tileSize / 4; j < coords.y + height + tileSize / 4; j++) {
             if (i < 0 || i >= WINDOW_WIDTH || j < 0 || j >= WINDOW_HEIGHT) {
                 continue;
             }
-            for (Sprite* pointer : controller->which[{i, j}]) {
+            for (Sprite *pointer : controller->which[{i, j}]) {
                 pointer->setRedraw();
             }
         }
     }
+
 }
 
 bool MovingSprite::intersects(Sprite *other, Point new_coords) const {

@@ -104,7 +104,7 @@ class TunnelingAlgorithm:
 
 if __name__ == '__main__':
     ta = TunnelingAlgorithm()
-    level = ta.generateLevel(32, 32)
+    level = ta.generateLevel(32, 20)
     mas = ['.', '#']
     for i in range(len(level)):
         for j in range(len(level[0])):
@@ -117,7 +117,7 @@ if __name__ == '__main__':
                 #level[i][j] = random.choice(['#', ' ']) # prob=[0.7, 0.3])
             else:
                 level[i][j] = '.'
-    f = open('template1_cpp/level_tunnel2.txt', 'w')
+    f = open('template1_cpp/level.txt', 'w')
     s = ''.join(level[0])+'\n'
     s = s.replace(' ', '#')
     f.write(s)

@@ -22,6 +22,8 @@ private:
 
     MovementDir lastMoveDir;
 
+    int fireball_cooldown = 0;
+
 };
 
 #endif //MAIN_PLAYER_H

@@ -30,6 +30,7 @@ protected:
     Point old_coords{};
     int move_speed = 4;
     SpriteController* controller = nullptr;
+    unsigned char movesCount = 0;
 };
 
 

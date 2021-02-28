@@ -31,15 +31,22 @@ void Player::Interact() {
 }
 
 void Player::ThrowFireball() {
+    if (fireball_cooldown > 0) {
+        return;
+    }
     auto fireball = new Fireball("player_fireball", "../resources/fireball.png", coords, lastMoveDir);
 
     fireball->setController(controller);
     controller->addSprite(fireball);
+    fireball_cooldown = 10;
 }
 
 
 void Player::onUpdate() {
     MovingSprite::onUpdate();
+
+    if (fireball_cooldown > 0)
+        fireball_cooldown--;
 
     if (lastMoveDir == MovementDir::UP) {
         cutSprite({start.x, 96}, {finish.x, 128});

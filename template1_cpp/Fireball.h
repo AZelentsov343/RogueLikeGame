@@ -19,6 +19,8 @@ public:
 
     void StartBreaking();
 
+    void move(MovementDir dir) override;
+
 private:
 
     int movesToBreak = 3;

@@ -9,7 +9,7 @@
 #include <GLFW/glfw3.h>
 
 
-constexpr GLsizei WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 1024; //1600
+constexpr GLsizei WINDOW_WIDTH = 1664, WINDOW_HEIGHT = 1024;
 constexpr int tileSize = 32;
 
 enum class MovementDir {

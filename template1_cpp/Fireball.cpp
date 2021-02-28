@@ -29,6 +29,86 @@ void Fireball::StartBreaking() {
     makeUncollidable();
 }
 
+void Fireball::move(MovementDir dir) {
+    if (!controller) {
+        throw std::runtime_error("moving sprite has no contoller attached");
+    }
+    if (controller->isUpdating()) {
+        return;
+    }
+
+    int move_dist = move_speed * 1;
+    switch (dir) {
+        case MovementDir::UP:
+            while (move_dist > 0 && coords.y + move_dist + tileSize >= WINDOW_HEIGHT) {
+                move_dist--;
+            }
+
+            for (auto sprite : controller->collidable) {
+                if (sprite->collidable() && intersects(sprite, {coords.x, coords.y + move_dist})) {
+                    move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
+                }
+            }
+
+            old_coords.y = coords.y;
+            coords.y += move_dist;
+            break;
+        case MovementDir::DOWN:
+            while (move_dist > 0 && coords.y - move_dist < 0) {
+                move_dist--;
+            }
+            for (auto sprite : controller->collidable) {
+                if (sprite->collidable() && intersects(sprite, {coords.x, coords.y - move_dist})) {
+                    move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
+                }
+            }
+            old_coords.y = coords.y;
+            coords.y -= move_dist;
+
+            break;
+        case MovementDir::LEFT:
+            while (move_dist > 0 && coords.x - move_dist < 0) {
+                move_dist--;
+            }
+            for (auto sprite : controller->collidable) {
+                if (sprite->collidable() && intersects(sprite, {coords.x - move_dist, coords.y})) {
+                    move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
+                }
+            }
+            old_coords.x = coords.x;
+            coords.x -= move_dist;
+            break;
+        case MovementDir::RIGHT:
+            while (move_dist > 0 && coords.x + move_dist + tileSize >= WINDOW_WIDTH) {
+                move_dist--;
+            }
+            for (auto sprite : controller->collidable) {
+                if (sprite->collidable() && intersects(sprite, {coords.x + move_dist, coords.y})) {
+                    move_dist = controller->registerCollision(this, sprite) ? move_dist : 0;
+                }
+            }
+            old_coords.x = coords.x;
+            coords.x += move_dist;
+            break;
+        default:
+            break;
+    }
+
+    movesCount++;
+    if (movesCount % 3) {
+        for (int i = coords.x - tileSize / 4; i < coords.x + width + tileSize / 4; i++) {
+            for (int j = coords.y - tileSize / 4; j < coords.y + height + tileSize / 4; j++) {
+                if (i < 0 || i >= WINDOW_WIDTH || j < 0 || j >= WINDOW_HEIGHT) {
+                    continue;
+                }
+                for (Sprite *pointer : controller->which[{i, j}]) {
+                    pointer->setRedraw();
+                }
+            }
+        }
+    }
+}
+
 void Fireball::DrawThis(Image &screen) {
     //std::cout << "Drawing " << std::endl;
 
@@ -64,12 +144,16 @@ void Fireball::onUpdate() {
     }
     if (breaking) {
         if (updates % update_freq == 0) {
+
             cutSprite({(start.x + 32) % 160,32}, {(start.x + 32) % 160 + 32, 64});
             movesToBreak--;
             if (movesToBreak == 0) {
                 valid = false;
-                for (int i = coords.x; i < coords.x + width; i++) {
-                    for (int j = coords.y; j < coords.y + height; j++) {
+                for (int i = coords.x - tileSize; i < coords.x + width + tileSize; i++) {
+                    for (int j = coords.y - tileSize; j < coords.y + height + tileSize; j++) {
+                        if (i < 0 || i >= WINDOW_WIDTH || j < 0 || j >= WINDOW_HEIGHT) {
+                            continue;
+                        }
                         for (Sprite* pointer : controller->which[{i, j}]) {
                             pointer->setRedraw();
                         }
