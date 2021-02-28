@@ -27,7 +27,7 @@ public:
 
 private:
 
-    int decisionCount = 0;
+    int decision_freq = 150;
 
     std::stack<MovementDir> moves_stack;
 

@@ -71,7 +71,7 @@ void Sprite::DrawThis(Image &screen) {
     }
 
     //std::cout << id << " at " << coords.x << " " << coords.y << " draw" << std::endl;
-
+    need_redraw = false;
 }
 
 void Sprite::onUpdate() {

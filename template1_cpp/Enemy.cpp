@@ -85,7 +85,7 @@ void Enemy::ThrowFireball(MovementDir dir) {
 
 void Enemy::onUpdate() {
 
-    if (updates % 100 == 0) {
+    if (updates % decision_freq == 0) {
         PathFinding pf(controller, move_speed);
         moves_stack = pf.findPath(coords, player->getCoords());
     }

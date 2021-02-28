@@ -49,6 +49,7 @@ void SpriteController::update() {
             background_queue[i]->DrawThis(screen);
         }
         initializing_steps--;
+
     } else if (initializing_steps > 0) {
         for (int i = (INITIAL_STEPS_DEFAULT - initializing_steps) * IN_ONE_TIME;
              i < (INITIAL_STEPS_DEFAULT - initializing_steps) * IN_ONE_TIME + IN_ONE_TIME; i++) {

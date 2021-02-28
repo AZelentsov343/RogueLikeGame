@@ -71,6 +71,8 @@ protected:
     bool is_collidable;
     bool interactive = false;
 
+    bool need_redraw = true;
+
     RenderPriority priority;
 
     Point start{};

@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
     while (gl_error != GL_NO_ERROR)
         gl_error = glGetError();
 
-    std::vector<std::string> levels = {"../level_cellular2.txt", "../level_cellular.txt", "../level_tunnel.txt",
+    std::vector<std::string> levels = {"../level_tunnel.txt", "../level_cellular2.txt",  "../level_tunnel.txt",
                                        "../level_tunnel2.txt",
                                        "../level_drunkards.txt", "../level_drunkards2.txt"};
 
@@ -179,11 +179,12 @@ int main(int argc, char **argv) {
             break;
         }
         std::string level = read_level(levelFile);
+        std::cout << level.size() << std::endl;
         SpriteController sc;
 
         for (int j = 0; j < WINDOW_HEIGHT; j += tileSize) {
             for (int i = 0; i < WINDOW_WIDTH; i += tileSize) {
-                int index = (j / tileSize) * (WINDOW_HEIGHT / tileSize) + (i / tileSize);
+                int index = (j / tileSize) * (WINDOW_WIDTH / tileSize) + (i / tileSize);
                 if (level[index] == '.') {
                     auto sp = new Sprite("floor", "../resources/floor32x32.png", {i, WINDOW_HEIGHT - tileSize - j});
                     sc.addSprite(sp);
@@ -202,6 +203,7 @@ int main(int argc, char **argv) {
                     auto player = new Player("../resources/player.png", {i, WINDOW_HEIGHT - tileSize - j}, 2);
                     sc.addPlayer(player);
                     player->setController(&sc);
+
                 } else if (level[index] == 'X') {
                     auto sp = new Sprite("exit", "../resources/exit32x32.png", {i, WINDOW_HEIGHT - tileSize - j},
                                          RenderPriority::BACKGROUND, true);
@@ -228,6 +230,7 @@ int main(int argc, char **argv) {
             }
         }
 
+
         //Image screenBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, 4);
 
         glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -235,17 +238,21 @@ int main(int argc, char **argv) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         GL_CHECK_ERRORS;
 
+
+
         //game loop
         while (!glfwWindowShouldClose(window) && !sc.died()) {
             GLfloat currentFrame = glfwGetTime();
             deltaTime = currentFrame - lastFrame;
             lastFrame = currentFrame;
-            glfwPollEvents();
 
+            std::cout << deltaTime << std::endl;
+            glfwPollEvents();
 
             processPlayerMovement(dynamic_cast<Player *>(sc.getPlayer()));
 
             sc.update();
+
 
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

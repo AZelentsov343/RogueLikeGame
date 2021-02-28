@@ -22,6 +22,10 @@ void Flame::DrawThis(Image &screen) {
             if (!validate_coords(i, j)) {
                 continue;
             }
+            Pixel pix = screen.GetPixel(i, j);
+            if (pix == Pixel{0, 0, 0, 0}) {
+                continue;
+            }
             if (dist < radius / 4) {
                 Pixel pix = screen.GetPixel(i, j);
                 uint8_t red = static_cast<int>(pix.r) + 64 >= 255 ? 255 : pix.r + 64;
