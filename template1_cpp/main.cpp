@@ -61,13 +61,13 @@ void processPlayerMovement(Player *player) {
     else
         player->stopX();
 
-    if (Input.keys[GLFW_KEY_SPACE]) {
-        Input.keys[GLFW_KEY_SPACE] = false;
+    if (Input.keys[GLFW_KEY_E]) {
+        Input.keys[GLFW_KEY_E] = false;
         player->Interact();
     }
 
-    if (Input.keys[GLFW_KEY_ENTER]) {
-        Input.keys[GLFW_KEY_ENTER] = false;
+    if (Input.keys[GLFW_KEY_Q]) {
+        Input.keys[GLFW_KEY_Q] = false;
         player->ThrowFireball();
     }
 }
@@ -118,8 +118,8 @@ int initGL() {
     std::cout << "Controls: " << std::endl;
     std::cout << "press right mouse button to capture/release mouse cursor  " << std::endl;
     std::cout << "W, A, S, D - movement  " << std::endl;
-    std::cout << "press SPACE to open doors" << std::endl;
-    std::cout << "press ENTER to throw fireball" << std::endl;
+    std::cout << "press E to open doors" << std::endl;
+    std::cout << "press Q to throw fireball" << std::endl;
     std::cout << "press ESC to exit" << std::endl;
 
     return 0;
