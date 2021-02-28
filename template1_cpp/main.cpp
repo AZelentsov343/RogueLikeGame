@@ -175,7 +175,7 @@ int main(int argc, char **argv) {
     bool next_level = true;
 
     for (auto &levelFile : levels) {
-        if (!next_level) {
+        if (!next_level || glfwWindowShouldClose(window)) {
             break;
         }
         std::string level = read_level(levelFile);
